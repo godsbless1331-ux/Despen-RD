@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#23452F">
+<title>Despensa Pro · MANAGEMENT TECH GEO</title>
+<style>
+:root{--bg:#F5F1E8;--cd:#FFFCF5;--tx:#1F2B23;--mu:#6E7568;--bd:#E4DAC4;--g:#23452F;--a:#B4552D;--gs:#EDE6D6;--wr:#F8E4D8;--ok:#DDE8D8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A16;--cd:#1E2721;--tx:#F1ECE0;--mu:#A9B0A4;--bd:#34423A;--g:#5FA574;--a:#E0805A;--gs:#2A362E;--wr:#3A2A22;--ok:#25382B}}
+:root[data-theme="dark"]{--bg:#141A16;--cd:#1E2721;--tx:#F1ECE0;--mu:#A9B0A4;--bd:#34423A;--g:#5FA574;--a:#E0805A;--gs:#2A362E;--wr:#3A2A22;--ok:#25382B}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:96px}
+h1,h2,h3{margin:0;letter-spacing:-.02em;line-height:1.15}p{margin:0}
+.w{max-width:900px;margin:0 auto;padding:18px 16px}.mu{color:var(--mu);font-size:.85rem}
+.brand{font-weight:800;font-size:13px;letter-spacing:.14em;color:var(--g)}
+.cd{background:var(--cd);border:1px solid var(--bd);border-radius:24px;padding:18px;margin-top:14px}
+.hero{background:#23452F;color:#F5F1E8;border-radius:28px;padding:26px 22px;margin-top:14px}
+.hero h1{font-size:1.8rem;max-width:340px}.hero p{opacity:.85;margin:10px 0 18px;max-width:360px}
+.b{font:inherit;font-weight:600;border:0;border-radius:16px;padding:12px 18px;min-height:46px;cursor:pointer;background:var(--gs);color:var(--g)}
+.b.p{background:var(--g);color:#fff}.b.a{background:var(--a);color:#fff}.b.wt{background:#F5F1E8;color:#23452F}.b.d{color:#B4552D}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.st div{background:var(--cd);border:1px solid var(--bd);border-radius:20px;padding:14px 8px;text-align:center}.st b{font-size:1.7rem;display:block}
+input,select,textarea{font:inherit;width:100%;padding:12px;border-radius:14px;border:1.5px solid var(--bd);background:var(--cd);color:var(--tx)}
+label{display:block;font-weight:600;font-size:.85rem;margin-top:12px}label input,label select{margin-top:6px;font-weight:400}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.it{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--bd)}.it:first-child{border-top:0}
+.it .g{flex:1;min-width:0}.it .ic{font-size:1.6rem}
+.sq{font:inherit;width:38px;height:38px;border-radius:12px;border:0;background:var(--gs);color:var(--g);cursor:pointer;font-weight:700}
+.bd{display:inline-block;border-radius:99px;padding:2px 10px;font-size:.72rem;font-weight:700;margin:3px 4px 0 0}
+.bd.r{background:#C0392B;color:#fff}.bd.y{background:#E7B04C;color:#2a1d12}.bd.o{background:var(--wr);color:var(--a)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:10px 0}.chip{font:inherit;white-space:nowrap;border:1.5px solid var(--bd);background:var(--cd);color:var(--tx);border-radius:99px;padding:8px 14px;cursor:pointer}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.big{background:var(--cd);border:1px solid var(--bd);border-radius:22px;padding:18px;text-align:left;font:inherit;color:var(--tx);cursor:pointer}
+.big span{font-size:2rem;display:block}.big b{display:block;margin-top:6px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--cd);border-top:1px solid var(--bd);display:grid;grid-template-columns:repeat(6,1fr);padding:6px 2px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{font:inherit;font-size:.7rem;border:0;background:none;color:var(--mu);padding:6px 0;cursor:pointer}nav button span{display:block;font-size:1.3rem}nav button.on{color:var(--g);font-weight:700}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:14px;z-index:40}.ov.show{display:flex}
+.md{background:var(--cd);border-radius:22px;width:100%;max-width:520px;max-height:92vh;overflow:auto;padding:20px}
+.vw{background:#000;border-radius:16px;overflow:hidden;margin:12px 0;aspect-ratio:4/3}.vw video{width:100%;height:100%;object-fit:cover}
+.rv{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--bd)}.rv input{width:auto}
+.tt{position:fixed;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));max-width:420px;margin:0 auto;background:var(--g);color:#fff;border-radius:16px;padding:12px 16px;font-weight:600;z-index:50;display:none}
+.empty{text-align:center;padding:26px 10px;color:var(--mu)}.empty span{font-size:3rem;display:block}
+:root{--bg:#EEF2F8;--cd:#FFFFFF;--cg:rgba(255,255,255,.72);--tx:#15203B;--mu:#64708A;--bd:#D9E0EC;--gs:#E3E9F4;--wr:#FBE5DA;--h1:#0A1F4D;--h2:#1D4FB5;--gt:#0A1F4D;--gtd:#8DB4FF;--g:var(--gt);--a:#E2682E;--blob:rgba(29,79,181,.2);--grad:linear-gradient(135deg,var(--h1),var(--h2))}
+:root[data-tema="esmeralda"]{--h1:#0F3D2E;--h2:#1F8F5F;--gt:#0F3D2E;--gtd:#6EDBA5;--a:#D98E2B;--blob:rgba(31,143,95,.2)}
+:root[data-tema="atardecer"]{--h1:#7A1F3D;--h2:#E2682E;--gt:#8A2346;--gtd:#FF9DB5;--a:#2F6FD6;--blob:rgba(226,104,46,.2)}
+:root[data-tema="violeta"]{--h1:#2E1A6B;--h2:#7B4DE0;--gt:#3A2380;--gtd:#BBA2FF;--a:#E0508A;--blob:rgba(123,77,224,.2)}
+:root[data-tema="rosa"]{--h1:#A0245F;--h2:#F06FA5;--gt:#A0245F;--gtd:#FFA3CB;--a:#2F6FD6;--blob:rgba(240,111,165,.2)}
+:root[data-tema="grafito"]{--h1:#1C1F26;--h2:#4A5262;--gt:#1C1F26;--gtd:#C3CAD8;--a:#E2682E;--blob:rgba(74,82,98,.2)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1220;--cd:#161D2E;--cg:rgba(22,29,46,.66);--tx:#EEF1F8;--mu:#9AA5BD;--bd:#2A3550;--gs:#212A40;--wr:#3A2A22;--gt:var(--gtd);--g:var(--gt);--a:#E8794A}}
+:root[data-theme="dark"]{--bg:#0D1220;--cd:#161D2E;--cg:rgba(22,29,46,.66);--tx:#EEF1F8;--mu:#9AA5BD;--bd:#2A3550;--gs:#212A40;--wr:#3A2A22;--gt:var(--gtd);--g:var(--gt);--a:#E8794A}
+body{background:radial-gradient(520px 340px at 6% -4%,var(--blob),transparent 70%),radial-gradient(480px 320px at 100% 22%,var(--blob),transparent 70%),var(--bg);background-attachment:fixed}
+.cd,.st div,.big{background:var(--cg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+nav{background:var(--cg);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.b.p,.chip.on{background:var(--grad);color:#fff;border-color:transparent}
+.b.wt{background:rgba(255,255,255,.9);color:#0A1F4D}
+.tt{background:var(--grad)}
+.brand{background:linear-gradient(90deg,var(--gt),var(--h2));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero{background:linear-gradient(135deg,var(--h1),var(--h2));position:relative;overflow:hidden;box-shadow:0 18px 40px -22px var(--h2)}
+.hero::before{content:"";position:absolute;right:-50px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.28);filter:blur(34px);pointer-events:none}
+.hero::after{content:"";position:absolute;left:-60px;bottom:-80px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.2);filter:blur(40px);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.sws{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.sw{font:inherit;font-size:.75rem;background:var(--cd);border:2px solid var(--bd);border-radius:16px;padding:8px;cursor:pointer;color:var(--tx)}
+.sw i{display:block;height:34px;border-radius:10px;margin-bottom:6px}
+.sw.on{border-color:var(--gt)}
+.b{box-shadow:0 4px 0 rgba(0,0,0,.2),0 12px 18px -10px rgba(0,0,0,.45);transition:transform .12s,box-shadow .12s}
+.b:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.2),0 4px 8px -6px rgba(0,0,0,.4)}
+.sq,.chip{transition:transform .12s,box-shadow .12s}.sq{box-shadow:0 3px 0 rgba(0,0,0,.15)}.sq:active{transform:translateY(2px);box-shadow:none}
+.cd,.st div,.big{box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 18px 30px -18px rgba(10,31,77,.5)}
+.big,.st div,.hero{transition:transform .15s ease-out;will-change:transform}
+.big:active{transform:perspective(600px) rotateX(6deg) scale(.97)}
+.big span{transition:transform .3s}.big:hover span{transform:translateZ(30px) scale(1.2) rotate(-6deg)}
+.hero{background-size:200% 200%;animation:grad 10s ease infinite}
+@keyframes grad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero>.scene{position:absolute;right:20px;top:20px;width:56px;height:56px;perspective:500px;z-index:1}
+.cube{width:56px;height:56px;position:relative;transform-style:preserve-3d;animation:spin 14s linear infinite}
+.cube b{position:absolute;inset:0;display:grid;place-items:center;font-size:26px;font-weight:400;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);border-radius:10px}
+.cube b:nth-child(1){transform:translateZ(28px)}.cube b:nth-child(2){transform:rotateY(90deg) translateZ(28px)}.cube b:nth-child(3){transform:rotateY(180deg) translateZ(28px)}.cube b:nth-child(4){transform:rotateY(-90deg) translateZ(28px)}.cube b:nth-child(5){transform:rotateX(90deg) translateZ(28px)}.cube b:nth-child(6){transform:rotateX(-90deg) translateZ(28px)}
+@keyframes spin{from{transform:rotateX(-22deg) rotateY(0)}to{transform:rotateX(-22deg) rotateY(360deg)}}
+.hero.hm h1,.hero.hm p{padding-right:74px}
+body::before,body::after{content:"";position:fixed;border-radius:50%;filter:blur(55px);background:var(--blob);pointer-events:none;z-index:-1;animation:flt2 11s ease-in-out infinite}
+body::before{width:300px;height:300px;left:-90px;top:36%}body::after{width:260px;height:260px;right:-80px;top:8%;animation-delay:-5s}
+@keyframes flt2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.15)}}
+#app.anim>*{animation:rise .55s cubic-bezier(.2,.9,.3,1) both}
+#app.anim>*:nth-child(2){animation-delay:.06s}#app.anim>*:nth-child(3){animation-delay:.12s}#app.anim>*:nth-child(4){animation-delay:.18s}#app.anim>*:nth-child(5){animation-delay:.24s}#app.anim>*:nth-child(n+6){animation-delay:.3s}
+@keyframes rise{from{opacity:0;transform:perspective(800px) translateY(26px) rotateX(-14deg)}to{opacity:1;transform:none}}
+nav{left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom,0px));border:1px solid var(--bd);border-radius:26px;padding:6px 2px;box-shadow:0 18px 36px -12px rgba(5,15,50,.55),0 1px 0 rgba(255,255,255,.4) inset}
+nav button span{transition:transform .25s}nav button.on span{transform:translateY(-5px) scale(1.25);filter:drop-shadow(0 6px 5px rgba(0,0,0,.35))}
+.empty span{animation:flt 3.2s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translateY(0) rotateY(-14deg)}50%{transform:translateY(-10px) rotateY(14deg)}}
+.bu{position:fixed;left:50%;bottom:120px;font-size:22px;z-index:60;pointer-events:none;animation:bu 1s ease-out forwards}
+@keyframes bu{from{transform:translate(0,0) scale(.4) rotate(0);opacity:1}to{transform:translate(var(--x),var(--y)) scale(1.2) rotate(var(--r));opacity:0}}
+@media(prefers-reduced-motion:reduce){.cube,.hero,body::before,body::after,.empty span,#app.anim>*{animation:none!important}}
+.brand,.cred{background:linear-gradient(90deg,#ff3d81,#ff9f1c,#ffd400,#2ee66b,#19d3ff,#5b6cff,#c13cff);background-size:100% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:hue 5s linear infinite;text-shadow:none}
+.cred{text-align:center;margin:26px 0 0;font-weight:800;letter-spacing:.14em;font-size:.85rem}
+@keyframes hue{from{filter:hue-rotate(0deg) saturate(1.2)}to{filter:hue-rotate(360deg) saturate(1.2)}}
+@media(prefers-reduced-motion:reduce){.brand,.cred{animation:none!important}}
+.bd.ok{background:#1f9d57;color:#fff}
+details{border-top:1px solid var(--bd);padding:10px 0}details summary{cursor:pointer;list-style:none}details summary::-webkit-details-marker{display:none}details[open] summary{margin-bottom:6px}
+#app ol{padding-left:22px;margin:10px 0}#app li{margin:6px 0}
+.tip{background:var(--wr);border-radius:12px;padding:8px 12px;font-size:.85rem;margin:8px 0 0}
+
+/* ===== cubo destacado y centrado ===== */
+.hero.hm{text-align:center;padding-top:22px}
+.hero.hm h1,.hero.hm p{padding-right:0;margin-left:auto;margin-right:auto}
+.hero.hm .row{justify-content:center}
+.hero>.scene{position:relative;right:auto;top:auto;width:92px;height:92px;margin:2px auto 14px;perspective:700px}
+.scene::before{content:"";position:absolute;left:50%;bottom:-16px;width:84px;height:16px;margin-left:-42px;border-radius:50%;background:rgba(0,0,0,.28);filter:blur(7px)}
+.cube{width:92px;height:92px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.28))}
+.cube b{font-size:42px;border-radius:16px;background:rgba(255,255,255,.24);border:1.5px solid rgba(255,255,255,.6)}
+.cube b:nth-child(1){transform:translateZ(46px)}.cube b:nth-child(2){transform:rotateY(90deg) translateZ(46px)}.cube b:nth-child(3){transform:rotateY(180deg) translateZ(46px)}.cube b:nth-child(4){transform:rotateY(-90deg) translateZ(46px)}.cube b:nth-child(5){transform:rotateX(90deg) translateZ(46px)}.cube b:nth-child(6){transform:rotateX(-90deg) translateZ(46px)}
+/* ===== guias de texto ===== */
+.gd{margin-top:10px}.gd summary{display:flex;align-items:center;gap:8px}.gd summary b{flex:1}
+.gd summary::after{content:"＋";font-weight:700;color:var(--gt)}.gd[open] summary::after{content:"−"}
+.gd p{margin:6px 0}.gd .mu{display:block}
+.sum{background:var(--ok,#DDE8D8);border-radius:14px;padding:10px 14px;margin:10px 0;font-size:.92rem}
+:root[data-theme="dark"] .sum{background:var(--gs)}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .sum{background:var(--gs)}}
+.bwhy{margin:2px 0 6px;color:var(--mu);font-size:.88rem}
+</style>
+</head>
+<body>
+<div class="w" id="app"></div>
+<nav id="tb">
+<button data-a="tab" data-t="home"><span>🏠</span>Inicio</button>
+<button data-a="tab" data-t="pan"><span>🧺</span>Despensa</button>
+<button data-a="tab" data-t="baby"><span>👶</span>Bebé</button>
+<button data-a="tab" data-t="add"><span>➕</span>Añadir</button>
+<button data-a="tab" data-t="list"><span>🛒</span>Lista</button>
+<button data-a="tab" data-t="set"><span>⚙️</span>Ajustes</button>
+</nav>
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div class="tt" id="tt"></div>
+<input type="file" id="fi" accept="image/*" hidden>
+<script>
+var SRC='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+/* CONFIGURACION: si tienes un proxy propio, pon su direccion en API_URL. Si no, la app pide tu clave en Ajustes. */
+var CONFIG={API_URL:"",ACCESS_CODE:"",MODEL:"claude-sonnet-5-5"};
+var mem={};
+var st={get:function(k){try{return localStorage.getItem('mtg2:'+k)}catch(e){return mem[k]||null}},set:function(k,v){try{localStorage.setItem('mtg2:'+k,v)}catch(e){mem[k]=v}}};
+var CATS={alimento:['🍎','Alimentos'],bebida:['🥤','Bebidas'],limpieza:['🧽','Limpieza'],higiene:['🧴','Higiene'],hogar:['🏠','Hogar'],mascota:['🐾','Mascotas'],bebe:['👶','Bebé'],otro:['📦','Otros']};
+var UNITS=['ud','kg','g','lb','l','ml','paq','caja'];
+var S={items:[],extra:[],hist:[],codes:{},baby:{ppd:6},cfg:{},prices:{}},BF='todo',T='home',Q='',F='todo',PEND=[],SC={};
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+function uid(){return Math.random().toString(36).slice(2,9)}
+function fmt(n){return Math.round(Number(n)*100)/100}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function load(){try{var d=JSON.parse(st.get('data')||'{}');for(var k in S)if(d[k])S[k]=d[k]}catch(e){}}
+function save(){st.set('data',JSON.stringify(S))}
+function toast(m){var t=$('tt');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(function(){t.style.display='none'},3000)}
+function modal(h){$('md').innerHTML=h;$('ov').classList.add('show')}
+function closeM(){RM=null;stopCam();$('ov').classList.remove('show')}
+function copyText(t,ok){function fb(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast(ok)}catch(e){toast('No se pudo copiar')}a.remove()}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){toast(ok)},fb)}else fb()}
+function download(name,txt,type){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:type}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
+function days(i){if(!i.exp)return null;var d=new Date(i.exp+'T00:00:00'),t=new Date();t.setHours(0,0,0,0);return Math.round((d-t)/864e5)}
+function lows(){return S.items.filter(function(i){return i.min>0&&i.qty<=i.min})}
+function soons(){return S.items.filter(function(i){var d=days(i);return d!==null&&d<=C().warn})}
+function opts(arr,sel){return arr.map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>'}).join('')}
+function copts(sel){return Object.keys(CATS).map(function(k){return '<option value="'+k+'"'+(k===sel?' selected':'')+'>'+CATS[k][0]+' '+CATS[k][1]+'</option>'}).join('')}
+
+/* ---------- datos ---------- */
+function addItem(it){var f=S.items.filter(function(p){return norm(p.name)===norm(it.name)&&p.unit===it.unit})[0];
+  if(f){f.qty=fmt(f.qty+it.qty);if(it.exp)f.exp=it.exp;if(it.code)f.code=it.code}
+  else S.items.push({id:uid(),name:it.name,qty:it.qty,unit:it.unit||'ud',cat:CATS[it.cat]?it.cat:'otro',min:it.min||0,exp:it.exp||'',code:it.code||'',sub:it.cat==='bebe'?(it.sub||guessSub(it.name)):''})}
+var SUBS={panales:'Pañales',toallitas:'Toallitas y cambio',alimentacion:'Alimentación',bano:'Baño e higiene',utensilios:'Utensilios',ropa:'Ropa y otros'};
+function sopts(sel){return Object.keys(SUBS).map(function(k){return '<option value="'+k+'"'+(k===sel?' selected':'')+'>'+SUBS[k]+'</option>'}).join('')}
+function guessSub(l){var n=norm(l);if(/panalera/.test(n))return'utensilios';if(/toallit|cambiador|crema/.test(n))return'toallitas';if(/panal/.test(n))return'panales';if(/biberon|formula|papilla|cereal|compota/.test(n))return'alimentacion';if(/champu|shampoo|jabon|talco|colonia|banera|toalla|aceite/.test(n))return'bano';if(/ropa|body|media|gorro|pijama|manta|sabana|zapat/.test(n))return'ropa';return'utensilios'}
+function guess(l){var n=norm(l);if(/panal|biberon|chupete|formula infantil|leche de formula|papilla|toallitas|mordedor|babero|bebe/.test(n))return'bebe';
+  if(/perro|gato|mascota|dog|cat chow/.test(n))return'mascota';
+  if(/champu|shampoo|jabon|pasta dental|cepillo|papel higienico|desodorante|toalla sanitaria|crema/.test(n))return'higiene';
+  if(/cloro|detergente|suavizante|desinfectante|fregador|escoba|limpiador|lavaplatos/.test(n))return'limpieza';
+  if(/bombillo|pila|bateria|funda|bolsa|vela|fosforo|servilleta/.test(n))return'hogar';
+  if(/agua|refresco|jugo|cerveza|ron|vino|gaseosa|cafe|te |malta|bebida/.test(n))return'bebida';
+  return'alimento'}
+function unitN(u){u=u.toLowerCase();return({lbs:'lb',lt:'l',und:'ud',uds:'ud'})[u]||u}
+function parseText(t){var out=[];t.split(/\n+/).forEach(function(l){l=l.trim();if(l.length<2)return;
+  if(/total|subtotal|itbis|impuesto|cambio|efectivo|tarjeta|factura|ncf|rnc|fecha|gracias|cajero/.test(norm(l)))return;
+  var q=1,u='ud',m=l.match(/(\d+(?:[.,]\d+)?)\s*(kg|g|lbs|lb|lt|l|ml|uds|und|ud|paq|caja)\b/i);
+  if(m){q=parseFloat(m[1].replace(',','.'));u=unitN(m[2]);l=l.replace(m[0],' ')}
+  else{var m2=l.match(/^(\d+)\s*[xX]?\s+(?=\D)/);if(m2){q=+m2[1];l=l.replace(m2[0],'')}}
+  l=l.replace(/\s+(?:RD)?\$?\s*\d[\d.,]*\s*$/i,'').replace(/[^\p{L}\p{N}\s\-]/gu,' ').replace(/\s+/g,' ').trim();
+  if(l.length<2||/^\d+$/.test(l))return;
+  out.push({name:cap(l),qty:q>0?q:1,unit:UNITS.indexOf(u)>=0?u:'ud',cat:guess(l)})});return out}
+
+/* ---------- vistas ---------- */
+function row(i){var b='',d=days(i);
+  if(d!==null){if(d<0)b+='<span class="bd r">Vencido</span>';else if(d<=C().warn)b+='<span class="bd y">Vence en '+d+' d</span>'}
+  if(i.min>0&&i.qty<=i.min)b+='<span class="bd o">Por reponer</span>';
+  return '<div class="it"><span class="ic">'+CATS[i.cat][0]+'</span><div class="g"><b>'+esc(i.name)+'</b><div class="mu">'+fmt(i.qty)+' '+esc(i.unit)+'</div>'+b+'</div><button class="sq" data-a="dec" data-id="'+i.id+'" aria-label="Menos">−</button><button class="sq" data-a="inc" data-id="'+i.id+'" aria-label="Más">+</button><button class="sq" data-a="edit" data-id="'+i.id+'" aria-label="Editar">✎</button></div>'}
+function plist(){var q=norm(Q),a=S.items.filter(function(i){return(F==='todo'||i.cat===F)&&(!q||norm(i.name).indexOf(q)>=0)}).sort(sorter);
+  if(!S.items.length)return '<div class="empty"><span>🧺</span>Tu despensa está vacía.<div class="row" style="justify-content:center"><button class="b a" data-a="tab" data-t="add">Añadir productos</button></div></div>';
+  return a.length?'<div class="cd">'+a.map(row).join('')+'</div>':'<div class="empty">Sin resultados.</div>'}
+function wa(){return '<div class="cd" style="text-align:center"><h3>💬 ¿Quieres más información?</h3><p class="mu" style="margin:6px 0 10px">Escríbenos por WhatsApp al 809-983-1578</p><a class="b p" style="display:inline-flex;align-items:center;text-decoration:none" href="https://wa.me/18099831578?text='+encodeURIComponent('Hola, quiero más información sobre Despensa Pro')+'" target="_blank" rel="noopener">Abrir WhatsApp</a></div>'}
+function hguide(){return '<div class="cd"><h3>📘 Guía rápida</h3><details class="gd"><summary><b>🍳 Qué puedo cocinar</b></summary><p>Guarda tus alimentos y toca <b>¿Qué cocino?</b>. La app te escribe qué recetas puedes hacer ya, cuáles te faltan por poco, cuánto costaría hacerlas con compras en el colmado y te da el paso a paso.</p><div class="row"><button class="b" data-a="rec">Ver recetas</button></div></details><details class="gd"><summary><b>👶 Artículos de bebé</b></summary><p>En la pestaña Bebé guardas pañales, toallitas, biberones y más. Cada artículo trae un mini tutorial de cómo usarlo y cuántos días te duran los pañales.</p><div class="row"><button class="b" data-a="tab" data-t="baby">Ir a Bebé</button></div></details><details class="gd"><summary><b>🛒 Que no se te acabe nada</b></summary><p>Pon un mínimo a cada producto y aparecerá en <b>Por reponer</b>. También puedes guardar recordatorios y enviar la lista por WhatsApp.</p></details></div>'}
+function vHome(){var al='',lo=lows(),so=soons();
+  if(so.length)al+='<div class="cd"><h3>⏰ Vencen pronto</h3>'+so.slice(0,6).map(row).join('')+'</div>';
+  if(lo.length)al+='<div class="cd"><h3>📉 Por reponer</h3>'+lo.slice(0,6).map(row).join('')+'</div>';
+  var pr=S.extra.filter(function(x){return!x.done});if(pr.length)al='<div class="cd"><h3>🔔 No olvides comprar</h3>'+pr.sort(function(x,y){var p=rdays(x),q=rdays(y);return(p===null?9e3:p)-(q===null?9e3:q)}).slice(0,6).map(rrow).join('')+'<div class="row"><button class="b" data-a="tab" data-t="list">Ver todos</button></div></div>'+al;
+  var h=S.hist.length?'<div class="cd"><h3>Últimas entradas</h3>'+S.hist.slice(0,5).map(function(x){return '<div class="it"><div class="g"><b>'+esc(x.s)+'</b><div class="mu">'+x.n+' productos · '+new Date(x.t).toLocaleDateString('es-DO')+'</div></div></div>'}).join('')+'</div>':'';
+  return '<div class="brand">MANAGEMENT TECH GEO</div><section class="hero hm"><div class="scene" aria-hidden="true"><div class="cube"><b>🛒</b><b>🍎</b><b>🧴</b><b>👶</b><b>🥤</b><b>🧽</b></div></div><h1>'+(C().name?esc(C().name):'Tu despensa, siempre al día')+'</h1><p>'+(S.items.length?'Tienes '+S.items.length+' productos registrados.':'Escanea un código o sube tu factura y llenamos tu despensa en segundos.')+'</p><div class="row"><button class="b a" data-a="tab" data-t="add">＋ Añadir productos</button><button class="b wt" data-a="scan">▦ Escanear código</button><button class="b wt" data-a="rec">🍳 ¿Qué cocino?</button></div></section><div class="st"><div><b>'+S.items.length+'</b><span class="mu">Productos</span></div><div><b>'+lo.length+'</b><span class="mu">Por reponer</span></div><div><b>'+so.length+'</b><span class="mu">Vencen pronto</span></div></div>'+al+hguide()+h+wa()}
+function vPan(){var ch=['todo'].concat(Object.keys(CATS)).map(function(k){return '<button class="chip'+(F===k?' on':'')+'" data-a="flt" data-k="'+k+'">'+(k==='todo'?'Todo':CATS[k][0]+' '+CATS[k][1])+'</button>'}).join('');
+  return '<h1>Tu despensa</h1><div class="row" style="margin-top:8px"><button class="b a" data-a="rec">🍳 ¿Qué puedo cocinar?</button></div><input id="sq" placeholder="Buscar producto…" value="'+esc(Q)+'" style="margin-top:12px"><div class="chips">'+ch+'</div><div id="pl">'+plist()+'</div>'}
+function vAdd(){return '<h1>Añadir productos</h1><p class="mu">Elige cómo quieres registrar tus compras.</p><div class="grid"><button class="big" data-a="scan"><span>▦</span><b>Escanear código</b><div class="mu">Código de barras con la cámara</div></button><button class="big" data-a="photo"><span>🧾</span><b>Foto de factura</b><div class="mu">Lectura con IA</div></button><button class="big" data-a="paste"><span>📋</span><b>Pegar factura o lista</b><div class="mu">Sin IA, una línea por producto</div></button><button class="big" data-a="new"><span>✍️</span><b>Manual</b><div class="mu">Cualquier producto</div></button></div>'}
+var RM=null;
+function rdays(x){if(!x.due)return null;var d=new Date(x.due+'T00:00:00'),t=new Date();t.setHours(0,0,0,0);return Math.round((d-t)/864e5)}
+function rbadge(x){var d=rdays(x);if(d===null)return'';return d<0?'<span class="bd r">Atrasado '+(-d)+' d</span>':d===0?'<span class="bd y">Hoy</span>':'<span class="bd o">En '+d+' d</span>'}
+function rrow(x){return '<div class="it"><input type="checkbox" style="width:auto" data-a="tgl" data-id="'+x.id+'"'+(x.done?' checked':'')+' aria-label="Hecho"><div class="g"'+(x.done?' style="text-decoration:line-through;opacity:.6"':'')+'><b>'+esc(x.name)+'</b><div>'+rbadge(x)+'</div></div>'+(x.done?'':'<button class="sq" data-a="rmbuy" data-id="'+x.id+'" aria-label="Ya lo compré">🛒</button>')+'<button class="sq" data-a="delx" data-id="'+x.id+'" aria-label="Quitar">✕</button></div>'}
+function addRem(v,d){v=(v||'').trim();if(!v){toast('Escribe qué quieres comprar');return}S.extra.push({id:uid(),name:v,due:d||'',done:false});save();render();toast('Recordatorio guardado')}
+function checkDue(){var d=S.extra.filter(function(x){return!x.done&&x.due&&rdays(x)<=0});if(!d.length)return;var m=d.map(function(x){return x.name}).join(', ');toast('🔔 Hoy toca comprar: '+m);try{if('Notification' in window&&Notification.permission==='granted')new Notification('Recordatorio de compra',{body:m})}catch(e){}}
+function vRem(){var a=S.extra.slice().sort(function(x,y){if(!!x.done!==!!y.done)return x.done?1:-1;var dx=rdays(x),dy=rdays(y);return(dx===null?9e3:dx)-(dy===null?9e3:dy)});
+ return '<div class="cd"><h3>🔔 Recordatorios de compra</h3><p class="mu" style="margin:4px 0 8px">Guarda lo que quieres comprar para que no se te olvide. Toca 🛒 cuando lo compres y pasa a tu despensa.</p>'+(a.length?a.map(rrow).join(''):'<p class="mu">Aún no tienes recordatorios.</p>')+'<label>Producto<input id="ex" placeholder="Ej. Pañales talla 3, cloro, arroz"></label><div class="two"><label>Recordarme el (opcional)<input id="exd" type="date"></label><div style="align-self:end"><button class="b p" data-a="addx" style="width:100%">Guardar recordatorio</button></div></div><div class="row"><button class="b" data-a="notif">🔔 Activar avisos del navegador</button></div><p class="mu" style="margin-top:8px">Los avisos aparecen cuando abres la app.</p></div>'}
+function vList(){var lo=lows(),h='<h1>Lista de compras</h1>';
+  h+='<div class="cd"><h3>Por reponer</h3>'+(lo.length?lo.map(function(i){return '<div class="it"><span class="ic">'+CATS[i.cat][0]+'</span><div class="g"><b>'+esc(i.name)+'</b><div class="mu">Quedan '+fmt(i.qty)+' '+esc(i.unit)+'</div></div></div>'}).join(''):'<p class="mu" style="margin-top:8px">Nada por reponer. Define un mínimo en cada producto para recibir avisos.</p>')+'</div>';
+  h=vRem()+h;
+  return h+'<div class="row"><button class="b a" data-a="share">Enviar por WhatsApp</button><button class="b" data-a="copyl">Copiar lista</button></div>'}
+var THEMES={ocean:['Azul océano','#0A1F4D','#1D4FB5'],esmeralda:['Esmeralda','#0F3D2E','#1F8F5F'],atardecer:['Atardecer','#7A1F3D','#E2682E'],violeta:['Violeta','#2E1A6B','#7B4DE0'],rosa:['Rosa','#A0245F','#F06FA5'],grafito:['Grafito','#1C1F26','#4A5262']};
+function C(){var d={theme:'ocean',mode:'auto',name:'',warn:7,sort:'name',big:0,vib:1};for(var k in d)if(S.cfg&&S.cfg[k]!=null)d[k]=S.cfg[k];return d}
+function setCfg(k,v){S.cfg=C();S.cfg[k]=v;save();applyCfg()}
+function applyCfg(){var c=C(),r=document.documentElement;r.setAttribute('data-tema',THEMES[c.theme]?c.theme:'ocean');if(c.mode==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',c.mode);r.style.fontSize=c.big?'18px':'';document.body.style.fontSize=c.big?'18px':'';var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',(THEMES[c.theme]||THEMES.ocean)[1])}
+function sorter(x,y){var s=C().sort;if(s==='exp'){var a=x.exp||'9999',b=y.exp||'9999';if(a!==b)return a<b?-1:1}else if(s==='qty'&&x.qty!==y.qty)return x.qty-y.qty;return x.name.localeCompare(y.name)}
+function seg(key,opts,cur){return '<div class="chips">'+opts.map(function(o){return '<button class="chip'+(String(cur)===String(o[0])?' on':'')+'" data-a="cfg" data-k="'+key+'" data-v="'+o[0]+'">'+o[1]+'</button>'}).join('')+'</div>'}
+function vSet(){var c=C(),th=Object.keys(THEMES).map(function(k){var t=THEMES[k];return '<button class="sw'+(c.theme===k?' on':'')+'" data-a="cfg" data-k="theme" data-v="'+k+'" aria-label="'+t[0]+'"><i style="background:linear-gradient(135deg,'+t[1]+','+t[2]+')"></i>'+t[0]+'</button>'}).join('');
+ return '<h1>Ajustes</h1><div class="cd"><h3>🎨 Tema de color</h3><div class="sws">'+th+'</div></div>'+
+ '<div class="cd"><h3>🌗 Apariencia</h3><p class="mu" style="margin-top:6px">Modo</p>'+seg('mode',[['auto','Automático'],['light','Claro'],['dark','Oscuro']],c.mode)+'<p class="mu">Tamaño del texto</p>'+seg('big',[['0','Normal'],['1','Grande']],c.big?1:0)+'</div>'+
+ '<div class="cd"><h3>🏠 Mi despensa</h3><label>Nombre (aparece en Inicio)<input id="cfn" value="'+esc(c.name)+'" placeholder="Ej. Familia Pérez, Colmado Geo" maxlength="30"></label><p class="mu" style="margin-top:12px">Avisar de vencimientos con</p>'+seg('warn',[[3,'3 días'],[7,'7 días'],[15,'15 días'],[30,'30 días']],c.warn)+'<p class="mu">Ordenar la despensa por</p>'+seg('sort',[['name','Nombre'],['exp','Vencimiento'],['qty','Menos cantidad']],c.sort)+'<p class="mu">Vibrar al escanear un código</p>'+seg('vib',[['1','Sí'],['0','No']],c.vib?1:0)+'</div>'+
+ '<div class="cd"><h3>💰 Precios del colmado</h3><p class="mu" style="margin:6px 0 0">Ajusta los precios que usa la app para calcular cuánto cuesta cada receta.</p><div class="row"><button class="b" data-a="prices">Ver y ajustar precios</button></div></div>'+
+ '<div class="cd"><h3>🧹 Mantenimiento</h3><div class="row"><button class="b" data-a="clrx">Quitar recordatorios hechos</button><button class="b" data-a="clrh">Borrar historial</button></div></div>'+
+ wa()+'<div class="row"><button class="b d" data-a="reset">Borrar todos mis datos</button></div><p class="cred">✨ Creado por MANAGEMENT TECH GEO ✨</p>'}
+function vSetOld(){return '<h1>Ajustes</h1><div class="cd"><h3>Conectar la IA</h3><p class="mu" style="margin:6px 0 10px">Para leer facturas por foto. Pega tu clave de Anthropic; se guarda solo en este dispositivo.'+(CONFIG.API_URL?' Este archivo ya usa un proxy propio.':'')+'</p><input id="ky" type="password" placeholder="sk-ant-..." value="'+esc(st.get('key')||'')+'"><div class="row"><button class="b p" data-a="savekey">Guardar clave</button></div></div>'+
+  '<div class="cd"><h3>Respaldo de datos</h3><div class="row"><button class="b" data-a="backup">Copiar respaldo</button><button class="b" data-a="restore">Restaurar respaldo</button></div></div>'+
+  '<div class="cd"><h3>Código de esta página</h3><p class="mu" style="margin:6px 0 0">Copia todo el HTML y pégalo en un archivo index.html.</p><div class="row"><button class="b p" data-a="cpcode">📋 Copiar código HTML</button><button class="b" data-a="dlcode">⬇️ Descargar .html</button></div></div>'+
+  '<div class="row"><button class="b d" data-a="reset">Borrar todos mis datos</button></div><p class="mu" style="text-align:center;margin-top:16px">Creado por MANAGEMENT TECH GEO</p>'}
+var RF='all',RO=-1;
+var REC=[
+['Arroz con habichuelas','🍛','50 min',['arroz','habichuela|frijol','ajo','cebolla','aceite'],['Si tus habichuelas son secas, remójalas la noche anterior y hiérvelas hasta que ablanden.','Sofríe cebolla y ajo picados en aceite 2 minutos, agrega las habichuelas con agua y sal; deja hervir 15 minutos.','En otra olla sofríe el arroz con un chorrito de aceite y sal.','Agrega agua (que cubra dos dedos), tapa y cocina a fuego bajo hasta que seque y quede suelto.','Sirve el arroz con las habichuelas encima.']],
+['Mangú','🍌','30 min',['plátano','cebolla','aceite|mantequilla','huevo|queso'],['Pela los plátanos verdes y hiérvelos en agua con sal hasta que estén blandos (20 minutos).','Escurre guardando un poco del agua y májalos con un chorrito de aceite o mantequilla.','Sofríe cebolla en rodajas con un toque de vinagre y sal.','Sirve el mangú con la cebolla encima, acompañado de huevo o queso frito.']],
+['Moro de guandules','🥘','50 min',['arroz','guandul','cebolla','ajo','aceite'],['Sofríe ajo y cebolla picados en aceite.','Agrega los guandules cocidos con su caldo y sazona con sal.','Añade el arroz lavado y agua suficiente (que cubra dos dedos).','Cuando hierva, tapa y baja el fuego; cocina hasta que el arroz esté suelto.']],
+['Pollo guisado','🍗','45 min',['pollo|pechuga|muslo','cebolla','ajo','tomate','aceite'],['Sazona el pollo con ajo, sal y un poco de limón y déjalo reposar 15 minutos.','Dora las presas en aceite caliente por ambos lados y resérvalas.','Sofríe cebolla, ajo y tomate; devuelve el pollo y agrega media taza de agua.','Tapa y cocina a fuego medio 25 minutos hasta que esté tierno y la salsa espese.']],
+['Sancocho sencillo','🍲','1 h 30',['pollo|carne','yuca','plátano','auyama|ñame','cilantro'],['Sazona la carne con ajo y sal; dórala en la olla con un poco de aceite.','Agrega agua y cocina 30 minutos hasta que ablande.','Añade yuca, plátano y auyama en trozos y cocina 25 minutos más.','Agrega cilantro picado, ajusta de sal y sirve caliente con arroz.']],
+['Pastelón de plátano maduro','🥧','1 h 15',['plátano maduro','carne molida','queso','huevo','cebolla'],['Corta los plátanos maduros en láminas y fríelos hasta dorar.','Sofríe la carne molida con cebolla, ajo y sazón hasta que cocine.','En un molde arma una capa de plátano, otra de carne y queso; repite.','Cubre con huevo batido y hornea a 180 °C unos 30 minutos hasta dorar.']],
+['Huevos revueltos con vegetales','🍳','10 min',['huevo','cebolla','tomate','aceite'],['Pica la cebolla y el tomate en cubitos pequeños.','Sofríelos en un poco de aceite 3 minutos.','Bate los huevos con sal y viértelos en la sartén.','Revuelve a fuego bajo hasta que cuajen y sirve de inmediato.']],
+['Espagueti con salsa de tomate','🍝','25 min',['espagueti|spaghetti|pasta','tomate','ajo','queso','aceite'],['Hierve el espagueti en agua con sal según el tiempo del paquete y escúrrelo.','Sofríe ajo en aceite, agrega tomate picado o salsa y cocina 10 minutos.','Mezcla la pasta con la salsa.','Sirve con queso rallado por encima.']],
+['Avena caliente','🥣','10 min',['avena','leche','canela','azúcar'],['Calienta la leche con una pizca de canela.','Agrega la avena y revuelve a fuego bajo 5 minutos.','Endulza al gusto y deja reposar 2 minutos.','Sirve tibia.']],
+['Tostones','🟡','25 min',['plátano','aceite'],['Pela los plátanos verdes y córtalos en rodajas gruesas.','Fríelos 3 minutos por lado sin que se doren mucho.','Aplástalos con un plato o tostonera y pásalos por agua con sal.','Vuelve a freírlos hasta dorar y sírvelos calientes.']],
+['Sopa de pollo con fideos','🍜','50 min',['pollo|pechuga','fideo|pasta','zanahoria|papa','cebolla','cilantro'],['Hierve el pollo con cebolla y sal hasta que esté tierno (30 minutos).','Saca el pollo, desmenúzalo y devuélvelo al caldo.','Agrega zanahoria o papa en cubitos y cocina 10 minutos.','Añade los fideos y cocina 5 minutos más; termina con cilantro.']],
+['Tortilla de papa','🥔','30 min',['papa','huevo','cebolla','aceite'],['Pela y corta las papas en láminas finas; fríelas a fuego medio con la cebolla hasta que ablanden.','Bate los huevos con sal y mézclalos con las papas escurridas.','Cuaja la mezcla en una sartén a fuego bajo 4 minutos.','Voltea con ayuda de un plato y cocina 3 minutos más.']],
+['Ensalada de atún','🥗','10 min',['atún','tomate','cebolla','limón'],['Escurre el atún y desmenúzalo en un bowl.','Agrega tomate y cebolla en cubitos.','Aliña con limón, sal y un poco de aceite.','Sirve sola, con galletas o en pan.']],
+['Puré de papa','🥣','30 min',['papa|batata','leche|mantequilla'],['Pela las papas, córtalas en trozos y hiérvelas 20 minutos hasta que estén muy blandas.','Escúrrelas y májalas bien.','Agrega leche tibia o mantequilla y sal; mezcla hasta que quede cremoso.','Sirve caliente.']],
+['Arroz blanco','🍚','25 min',['arroz','aceite','ajo'],['Lava el arroz hasta que el agua salga casi clara.','Sofríe un diente de ajo en aceite, agrega el arroz y revuelve 1 minuto.','Añade agua (dos dedos por encima del arroz) y sal.','Cuando hierva y se seque, tapa y baja el fuego 15 minutos. Suelta con un tenedor.']],
+['Habichuelas guisadas','🫘','45 min',['habichuela|frijol','cebolla','ajo','tomate|salsa','aceite'],['Si son secas, remójalas la noche anterior y hiérvelas hasta que ablanden.','Sofríe cebolla, ajo y tomate en aceite.','Agrega las habichuelas con su caldo, sal y orégano.','Cocina a fuego medio 15 minutos hasta que espese; si quieres, aplasta unas pocas.']],
+['Yuca hervida con cebolla','🥔','35 min',['yuca','cebolla','aceite','limón'],['Pela la yuca, quita el centro duro y córtala en trozos.','Hiérvela en agua con sal 20 a 25 minutos hasta que esté suave.','Sofríe cebolla en rodajas con un poco de aceite y limón.','Sirve la yuca escurrida con la cebolla encima.']],
+['Arroz con pollo','🍗','55 min',['arroz','pollo|pechuga|muslo','cebolla','ajo','aceite'],['Sazona el pollo con ajo y sal; dóralo en la olla y resérvalo.','Sofríe cebolla y ajo, agrega el arroz y revuelve 1 minuto.','Devuelve el pollo, añade agua caliente (dos dedos) y sal.','Tapa y cocina a fuego bajo 20 a 25 minutos hasta que el arroz esté suelto.']],
+['Pescado frito','🐟','25 min',['pescado','limón','ajo','aceite'],['Limpia el pescado y haz cortes superficiales.','Sazónalo con limón, ajo y sal; déjalo reposar 15 minutos.','Fríelo en aceite bien caliente 5 a 6 minutos por lado.','Escúrrelo en papel y sírvelo con tostones o ensalada.']],
+['Sándwich de huevo y queso','🥪','10 min',['pan','huevo','queso'],['Fríe o revuelve el huevo con una pizca de sal.','Tuesta el pan ligeramente.','Arma el sándwich con el huevo y el queso encima.','Caliéntalo 1 minuto para que el queso se derrita.']],
+['Batido de guineo con leche','🥤','5 min',['guineo|banana','leche','azúcar|miel'],['Pela el guineo y pártelo en trozos.','Licúalo con leche fría y un poco de azúcar o miel.','Licúa hasta que quede cremoso y sírvelo de inmediato.']]
+];
+function hasIng(g){var al=g.split('|');return S.items.some(function(i){if(!(i.qty>0))return false;var n=norm(i.name);return al.some(function(a){return n.indexOf(norm(a))>=0})})}
+
+
+/* ---------- costos en el colmado (RD$, referencia octubre 2026) ---------- */
+var PP=4;
+var PR={arroz:['Arroz','lb',40,0],habichuela:['Habichuelas rojas','lb',80,0],guandul:['Guandules secos','lb',80,0],ajo:['Ajo','cabeza',18,1],cebolla:['Cebolla','lb',55,0],aceite:['Aceite de cocina','litro',190,1],tomate:['Tomate','lb',60,1],pollo:['Pollo','lb',78,0],platano:['Plátano','unidad',26,0],huevo:['Huevos (por unidad)','unidad',8,0],queso:['Queso','lb',280,1],yuca:['Yuca','lb',37,0],auyama:['Auyama','lb',29,0],molida:['Carne molida','lb',190,1],papa:['Papa','lb',45,0],pescado:['Pescado fresco','lb',150,1],limon:['Limón','unidad',10,1],cilantro:['Cilantro','ramito',20,1],pasta:['Espagueti o pasta','paquete',45,1],fideo:['Fideos','funda',15,1],avena:['Avena','lb',40,1],leche:['Leche','litro',105,1],canela:['Canela','palito',10,1],azucar:['Azúcar','lb',40,1],atun:['Atún','lata',85,1],pan:['Pan','unidad',12,1],guineo:['Guineo','unidad',8,1],cond:['Sal, orégano y sazón','paquetico',25,1]};
+var RC=[
+[[['arroz',1],['habichuela',.5],['ajo',1],['cebolla',.3],['aceite',.1]],1],
+[[['platano',3],['cebolla',.4],['aceite',.05],['huevo',4]],1],
+[[['arroz',1],['guandul',.5],['cebolla',.3],['ajo',1],['aceite',.1]],1],
+[[['pollo',2],['cebolla',.3],['ajo',1],['tomate',.4],['aceite',.1]],1],
+[[['pollo',1.5],['yuca',1.5],['platano',2],['auyama',1],['cilantro',1]],1],
+[[['platano',4],['molida',1],['queso',.25],['huevo',3],['cebolla',.3]],1],
+[[['huevo',6],['cebolla',.2],['tomate',.25],['aceite',.05]],1],
+[[['pasta',1],['tomate',.75],['ajo',1],['queso',.15],['aceite',.05]],1],
+[[['avena',.5],['leche',1],['canela',1],['azucar',.15]],0],
+[[['platano',3],['aceite',.3]],1],
+[[['pollo',1.5],['fideo',1],['papa',.5],['cebolla',.3],['cilantro',1]],1],
+[[['papa',1.5],['huevo',5],['cebolla',.3],['aceite',.15]],1],
+[[['atun',2],['tomate',.4],['cebolla',.25],['limon',2]],1],
+[[['papa',1.5],['leche',.25]],1],
+[[['arroz',1],['aceite',.05],['ajo',.5]],1],
+[[['habichuela',.75],['cebolla',.3],['ajo',1],['tomate',.3],['aceite',.05]],1],
+[[['yuca',2],['cebolla',.4],['aceite',.05],['limon',1]],1],
+[[['arroz',1],['pollo',2],['cebolla',.3],['ajo',1],['aceite',.1]],1],
+[[['pescado',2],['limon',2],['ajo',1],['aceite',.3]],1],
+[[['pan',4],['huevo',4],['queso',.25]],0],
+[[['guineo',4],['leche',1],['azucar',.1]],0]
+];
+function pr(k){var o=S.prices||{},v=o[k];return(v!=null&&v!==''&&!isNaN(v)&&Number(v)>0)?Number(v):PR[k][2]}
+function rd(n){return 'RD$'+Math.round(n).toLocaleString('es-DO')}
+function utxt(u,q){if(q<=1)return u;if(u==='unidad')return 'unidades';if(u==='lb')return u;return u+'s'}
+function qtxt(q,u){if(u==='litro'&&q<1)return Math.round(q*1000)+' ml';var f={0.25:'¼',0.5:'½',0.75:'¾'},w=Math.floor(q+1e-9),fr=Math.round((q-w)*100)/100,t;
+ t=fr===0?String(w):(f[fr]?(w?w+' ':'')+f[fr]:String(Math.round(q*100)/100));return t+' '+utxt(u,q)}
+function recCost(i){var rc=RC[i],r=REC[i],k=PP/4,tot=0,miss=0,ln=[];
+ rc[0].forEach(function(g,j){var q=g[1]*k,c=pr(g[0])*q,have=hasIng(r[3][j]);tot+=c;if(!have)miss+=c;ln.push({n:PR[g[0]][0],q:qtxt(q,PR[g[0]][1]),c:c,have:have})});
+ if(rc[1]){var c2=pr('cond')*Math.max(1,Math.round(k));tot+=c2;miss+=c2;ln.push({n:PR.cond[0],q:'1',c:c2,have:false})}
+ return{tot:tot,miss:miss,ln:ln}}
+function costHtml(x){var c=x.c;return '<div class="mu" style="margin-top:6px">💰 En el colmado: <b>'+rd(c.tot)+'</b> · unos '+rd(c.tot/PP)+' por persona</div>'+(c.miss<c.tot-.5?'<div class="mu">🛒 Te faltaría comprar: <b>'+rd(c.miss)+'</b></div>':'')}
+function costDetail(x){var c=x.c;return '<h3 style="margin-top:12px">💰 Cuánto cuesta (para '+PP+' personas)</h3>'+c.ln.map(function(l){return '<div class="it" style="padding:6px 0"><div class="g"><b>'+esc(l.n)+'</b> <span class="mu">'+l.q+'</span></div><span>'+(l.have?'<span class="bd ok">✅ lo tienes</span>':rd(l.c))+'</span></div>'}).join('')+'<div class="it" style="padding:8px 0"><div class="g"><b>Total si compraras todo</b></div><b>'+rd(c.tot)+'</b></div><p class="mu">Precios de referencia; cambian según el colmado y la zona. Ajústalos en Ajustes → Precios del colmado.</p>'}
+function costSummary(){var L=REC.map(function(r,i){return{i:i,c:recCost(i)}}).sort(function(a,b){return a.c.miss-b.c.miss});
+ return '<div class="sum">💰 <b>Presupuesto para '+PP+' personas:</b> lo más económico de cocinar hoy es <b>'+esc(REC[L[0].i][0])+'</b> (te faltaría comprar '+rd(L[0].c.miss)+'), después <b>'+esc(REC[L[1].i][0])+'</b> ('+rd(L[1].c.miss)+') y <b>'+esc(REC[L[2].i][0])+'</b> ('+rd(L[2].c.miss)+'). Calculado con precios de colmado y mercado de octubre 2026.</div>'}
+function ppChips(){return '<div class="chips"><span class="mu" style="align-self:center">Para:</span>'+[2,4,6].map(function(n){return '<button class="chip'+(PP===n?' on':'')+'" data-a="pp" data-n="'+n+'">'+n+' personas</button>'}).join('')+'<button class="chip" data-a="prices">💰 Precios</button></div>'}
+function openPrices(){var rows=Object.keys(PR).map(function(k){var p=PR[k];return '<div class="it" style="padding:6px 0"><div class="g"><b>'+esc(p[0])+'</b><div class="mu">por '+esc(p[1])+(p[3]?' · estimado':'')+'</div></div><input type="number" inputmode="decimal" min="0" step="1" data-pk="'+k+'" value="'+pr(k)+'" style="max-width:96px"></div>'}).join('');
+ modal('<h2>💰 Precios del colmado</h2><p class="mu">Referencia de octubre 2026, en RD$. Cámbialos por lo que cobra tu colmado y todos los costos se recalculan.</p><div>'+rows+'</div><p class="tip">Los precios sin la palabra «estimado» salen de reportes recientes de mercados y colmados de Santo Domingo (Listín Diario, 27 oct 2026; Banco Central y SIDIP, 6 oct 2026; Ministerio de Agricultura). Los marcados «estimado» son una aproximación porque no encontré un dato reciente confiable.</p><div class="row"><button class="b p" data-a="savepr">Guardar</button><button class="b" data-a="rstpr">Restablecer</button><button class="b" data-a="close">Cerrar</button></div>')}
+function recSummary(){
+ var all=REC.map(function(r,i){var h=r[3].map(hasIng),n=h.filter(Boolean).length;return{r:r,n:n,p:n/r[3].length,m:r[3].filter(function(g,k){return!h[k]})}});
+ var food=S.items.filter(function(i){return i.cat==='alimento'&&i.qty>0}).map(function(i){return i.name});
+ if(!food.length)return '<div class="sum">📝 <b>Tu despensa aún no tiene alimentos.</b> Añade arroz, huevos, plátanos, pollo, cebolla… y aquí te escribo qué puedes cocinar con ellos.</div>';
+ var ready=all.filter(function(x){return x.p===1}),near=all.filter(function(x){return x.p>=.6&&x.p<1}).sort(function(a,b){return b.p-a.p});
+ var t='📝 <b>Con lo que tienes guardado</b> ('+food.slice(0,8).map(esc).join(', ')+(food.length>8?'…':'')+') ';
+ t+=ready.length?'ya puedes cocinar: <b>'+ready.slice(0,5).map(function(x){return esc(x.r[0])}).join(', ')+'</b>'+(ready.length>5?' y '+(ready.length-5)+' más':'')+'. ':'todavía no completas una receta entera. ';
+ if(near.length)t+='Con poco más podrías hacer: '+near.slice(0,3).map(function(x){return '<b>'+esc(x.r[0])+'</b> (te falta '+esc(x.m.map(function(g){return g.split('|')[0]}).join(' y '))+')'}).join('; ')+'.';
+ return '<div class="sum">'+t+'</div>'}
+function recTutorial(){
+ return '<div class="cd"><h3>📘 Cómo funciona</h3><p class="mu" style="margin:4px 0 6px">La app compara tus alimentos guardados con cada receta.</p>'+
+ '<details class="gd"><summary><b>Paso a paso para usarlo</b></summary><ol><li>Guarda tus alimentos en <b>Añadir</b> (escaneando, con foto de factura, pegando la lista o a mano).</li><li>Entra a <b>¿Qué cocino hoy?</b>: arriba verás un resumen escrito de lo que puedes preparar.</li><li>Usa los filtros: <b>Puedo hacerlas ya</b> (tienes todo) o <b>Me falta poco</b> (te falta 1 o 2 ingredientes).</li><li>Los ingredientes con ✅ los tienes; los ⬜ te faltan.</li><li>Toca <b>Ver paso a paso</b> para leer la receta.</li><li>Si te falta algo, toca <b>Añadir lo que falta</b> y pasa a tus recordatorios de compra.</li><li>Cada receta muestra <b>cuánto costaría hacerla con compras en el colmado</b> y cuánto te falta por comprar. Cambia entre 2, 4 o 6 personas y usa el filtro <b>Más baratas</b> si el presupuesto está apretado.</li></ol><p class="tip">💡 Solo los productos de la categoría <b>Alimentos</b> cuentan para las recetas. Limpieza, higiene y bebé tienen su propio uso; los artículos de bebé tienen su guía en la pestaña 👶.</p></details>'+
+ '<details class="gd"><summary><b>Para que te sugiera mejor</b></summary><ul style="padding-left:20px;margin:8px 0"><li>Usa nombres simples: «Arroz», «Huevos», «Plátano verde».</li><li>Cuando se acabe algo, baja la cantidad con − para que no lo cuente.</li><li>Pon un mínimo a lo que siempre quieres tener y te avisamos para reponerlo.</li></ul></details></div>'}
+function vRec(){var L=REC.map(function(r,i){var h=r[3].map(hasIng),n=h.filter(Boolean).length;return{i:i,r:r,h:h,n:n,p:n/r[3].length,c:recCost(i)}}).filter(function(x){return RF==='all'||RF==='cheap'||(RF==='ready'&&x.p===1)||(RF==='near'&&x.p>=.6&&x.p<1)}).sort(function(a,b){return RF==='cheap'?(a.c.miss-b.c.miss||a.i-b.i):(b.p-a.p||a.i-b.i)});
+ var ch=[['all','Todas'],['ready','Puedo hacerlas ya'],['near','Me falta poco'],['cheap','💸 Más baratas']].map(function(o){return '<button class="chip'+(RF===o[0]?' on':'')+'" data-a="rflt" data-k="'+o[0]+'">'+o[1]+'</button>'}).join('');
+ var cards=L.map(function(x){var r=x.r,open=RO===x.i,st=x.p===1?'<span class="bd ok">✅ Puedes hacerla</span>':'<span class="bd o">Te faltan '+(r[3].length-x.n)+'</span>';
+  return '<div class="cd"><div class="it" style="border:0;padding:0"><span class="ic">'+r[1]+'</span><div class="g"><b>'+r[0]+'</b><div class="mu">⏱ '+r[2]+' · '+x.n+'/'+r[3].length+' ingredientes</div>'+st+'</div></div>'+costHtml(x)+'<div class="chips" style="flex-wrap:wrap">'+r[3].map(function(g,k){return '<span class="chip'+(x.h[k]?' on':'')+'">'+(x.h[k]?'✅ ':'⬜ ')+g.split('|')[0]+'</span>'}).join('')+'</div><div class="row"><button class="b" data-a="rop" data-i="'+x.i+'">'+(open?'Ocultar':'📖 Ver paso a paso')+'</button>'+(x.p<1?'<button class="b" data-a="rmiss" data-i="'+x.i+'">🛒 Añadir lo que falta</button>':'')+'</div>'+(open?costDetail(x)+'<ol>'+r[4].map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol><p class="tip">💡 Ajusta la sal y los condimentos al gusto y cocina siempre con manos y utensilios limpios.</p>':'')+'</div>'}).join('');
+ return '<div class="brand">MANAGEMENT TECH GEO</div><h1 style="margin-top:10px">🍳 ¿Qué cocino hoy?</h1><p class="mu">Recetas con los alimentos que tienes en tu despensa.</p>'+(S.items.length?'':'<div class="cd"><p>Tu despensa está vacía. Añade alimentos y aquí verás qué puedes cocinar.</p></div>')+recSummary()+costSummary()+recTutorial()+ppChips()+'<div class="chips">'+ch+'</div>'+(cards||'<div class="empty"><span>🍽️</span>No hay recetas en esta categoría todavía.</div>')+'<div class="row"><button class="b" data-a="tab" data-t="pan">← Volver a la despensa</button></div>'}
+var BT=[
+['panalera|bolso|mochila','Pañalera lista para salir',['Lleva 3 o 4 pañales, toallitas, un cambiador y una muda de ropa extra.','Agrega biberón o fórmula medida, y un babero si ya come.','Incluye una bolsita para la ropa sucia y los pañales usados.','Al volver a casa, repón lo que usaste.'],'Vuelve a llenarla de una vez para no olvidar nada al salir.'],
+['toallit','Toallitas húmedas',['Saca una toallita y cierra el paquete para que no se seque.','Limpia siempre de adelante hacia atrás.','Usa una toallita nueva por cada pasada si hay mucha suciedad.','Deja secar la piel un momento antes de poner el pañal limpio.'],'Si la piel está irritada, usa agua tibia y algodón. No tires las toallitas al inodoro.'],
+['panal','Pañales',['Revisa la talla según el peso que indica el paquete.','Cambia el pañal cada 2 o 3 horas o apenas esté sucio.','Abre el pañal limpio, levanta las piernitas y colócalo debajo, con las tiras hacia atrás.','Cierra las tiras ajustadas pero cómodas (debe caber un dedo) y acomoda los bordes hacia afuera.','En recién nacidos, dobla el borde del pañal para dejar libre el ombligo.'],'Si se escapa seguido o deja marcas rojas, probablemente toca subir de talla.'],
+['biberon|tetina','Biberones',['Esteriliza el biberón y la tetina antes del primer uso.','Lávalos con agua tibia y jabón después de cada toma, con un cepillo especial.','Prepara la leche y prueba unas gotas en tu muñeca: debe estar tibia, no caliente.','Da el biberón con el bebé semisentado, inclinándolo para que la tetina esté siempre llena.','Hazlo eructar a la mitad y al final de la toma.'],'Desecha la leche que sobre después de una hora y cambia la tetina si se agrieta.'],
+['formula|leche en polvo|leche infantil','Fórmula infantil',['Lávate las manos y usa un biberón limpio.','Mide primero el agua y luego agrega el polvo con la cucharita de la lata, a ras.','Mezcla suavemente hasta que no queden grumos.','Comprueba la temperatura en tu muñeca antes de darle.'],'Sigue la etiqueta de tu fórmula y las indicaciones de tu pediatra. No agregues más polvo del indicado.'],
+['papilla|cereal|compota|colado','Papillas y compotas',['Empieza solo cuando el pediatra lo indique (generalmente hacia los 6 meses).','Siéntalo erguido y usa una cuchara pequeña y blanda.','Ofrece un alimento nuevo a la vez y espera unos días antes de probar otro.','No agregues sal ni azúcar, y no des miel antes del año.'],'Nunca lo dejes solo mientras come.'],
+['chupete|chupon','Chupetes',['Lávalo con agua tibia y jabón antes de usarlo y esterilízalo de vez en cuando.','Elige la talla según la edad que indica el empaque.','No lo cuelgues con cordones largos del cuello ni lo endulces.','Revísalo a diario: si está pegajoso o agrietado, cámbialo.'],'Úsalo para calmar, no como sustituto de una toma.'],
+['mordedor','Mordedores',['Lávalo antes de usarlo.','Para aliviar las encías, enfríalo en la nevera (no en el congelador).','Entrégalo y quédate cerca mientras lo muerde.','Deséchalo si se rompe o se desprenden piezas.'],'Ideal cuando salen los primeros dientes.'],
+['babero','Baberos',['Colócalo antes de empezar a comer.','Ajusta el cierre sin apretar el cuello.','Después de comer, límpialo y lávalo.'],'Reemplázalo si tiene piezas sueltas o broches flojos.'],
+['esteriliz','Esterilizador',['Lava primero los biberones y piezas.','Pon agua hasta el nivel indicado en el manual.','Coloca las piezas boca abajo y enciéndelo.','Deja enfriar antes de abrir y seca con un paño limpio.'],'Vacía el agua y seca el aparato después de cada uso.'],
+['champu|shampoo|jabon|bano|banera|talco|colonia|aceite','Baño e higiene',['Prepara el agua tibia (unos 37 °C) y pruébala con tu codo.','Usa poco jabón o champú especial para bebé.','Sostén siempre al bebé con una mano; nunca lo dejes solo en la bañera.','Lava de arriba hacia abajo, sin olvidar los pliegues.','Sécalo con palmaditas, sobre todo cuello, axilas e ingles.'],'Un baño corto, de 5 a 10 minutos, es suficiente.'],
+['crema|pomada|oxido','Cremas y pomadas',['Limpia y seca bien la piel antes de aplicar.','Pon una capa fina, sin frotar fuerte.','Prueba primero en una zona pequeña.'],'Si el enrojecimiento no mejora en unos días, consulta al pediatra.'],
+['termometro','Termómetro',['Límpialo antes y después de usarlo.','Colócalo según su tipo (axila, oído o frente) y espera la señal.','Anota la hora y la temperatura.'],'Si es menor de 3 meses y tiene fiebre (38 °C o más), llama al pediatra de inmediato.'],
+['cuna|manta|sabana|colchon','Sueño seguro',['Acuéstalo siempre boca arriba sobre una superficie firme.','Deja la cuna libre de almohadas, peluches y mantas sueltas.','Usa sábana ajustada y ropa cómoda para la temperatura del cuarto.'],'Es la forma más segura de que duerma bien.'],
+['cuchara|plato|vaso|tazon','Utensilios de comida',['Lávalos con agua tibia y jabón antes del primer uso.','Elige cucharas suaves y de punta redondeada.','Ofrece porciones pequeñas y deja que explore.','Lávalos después de cada uso.'],'Los vasos con asas ayudan a practicar a partir de los 6 meses.'],
+['ropa|body|pijama|media|gorro|zapat','Ropa de bebé',['Lávala antes del primer uso con jabón suave.','Elige tallas holgadas y tela de algodón.','Viste al bebé por capas, según el clima.'],'Revisa etiquetas y botones para que no le molesten.'],
+['zzz','Uso general',['Lee las instrucciones del empaque antes de usarlo.','Lávalo y mantenlo limpio.','Supervisa siempre al bebé cuando lo use.'],'Ante cualquier duda, consulta a tu pediatra.']
+];
+function bguide(i){var n=norm(i.name),k;for(k=0;k<BT.length;k++)if(new RegExp(BT[k][0]).test(n))return BT[k];var m={panales:'Pañales',toallitas:'Toallitas húmedas',alimentacion:'Biberones',bano:'Baño e higiene',utensilios:'Utensilios de comida',ropa:'Ropa de bebé'}[i.sub];for(k=0;k<BT.length;k++)if(BT[k][1]===m)return BT[k];return BT[BT.length-1]}
+var BWHY={'Pañalera lista para salir':'Tu kit para salir con el bebé sin olvidar nada.','Toallitas húmedas':'Para limpiar al cambiar el pañal o las manitas.','Pañales':'Para mantener al bebé seco y cómodo, de día y de noche.','Biberones':'Para dar leche materna extraída o fórmula.','Fórmula infantil':'Leche en polvo que se prepara para el biberón.','Papillas y compotas':'Primeros alimentos cuando el pediatra lo autoriza.','Chupetes':'Ayuda a calmar al bebé.','Mordedores':'Alivian las encías cuando salen los dientes.','Baberos':'Protegen la ropa al comer o babear.','Esterilizador':'Deja biberones y piezas libres de gérmenes.','Baño e higiene':'Rutina de limpieza suave para la piel del bebé.','Cremas y pomadas':'Protegen e hidratan la piel, sobre todo en la zona del pañal.','Termómetro':'Para medir la temperatura con seguridad.','Sueño seguro':'Cuna y ropa de cama para dormir sin riesgos.','Utensilios de comida':'Para empezar a comer solito.','Ropa de bebé':'Ropa cómoda para cada clima.','Uso general':'Guía básica para cualquier artículo.'};
+function bguideHtml(bi,gen){if(!bi.length){bi=[{name:'Pañales',sub:'panales'},{name:'Toallitas húmedas',sub:'toallitas'},{name:'Biberón',sub:'alimentacion'},{name:'Fórmula infantil',sub:'alimentacion'},{name:'Papilla',sub:'alimentacion'},{name:'Champú de bebé',sub:'bano'}];gen=1}
+ var g={},ord=[];bi.forEach(function(i){var b=bguide(i),k=b[1];if(!g[k]){g[k]={b:b,n:[]};ord.push(k)}g[k].n.push(i.name)});
+ return '<div class="cd" id="bg"><h3>📖 '+(gen?'Guía general de artículos de bebé':'Cómo usar tus artículos de bebé')+'</h3><p class="mu" style="margin:4px 0 8px">'+(gen?'Aún no has guardado artículos de bebé. Mientras tanto, esta es la guía de los más comunes; cuando los añadas, aquí verás los tuyos.':'Un mini tutorial por cada artículo que guardaste. Toca uno para abrirlo.')+' Ante cualquier duda, consulta a tu pediatra.</p>'+ord.map(function(k,ix){var x=g[k],b=x.b;return '<details class="gd"'+(ix===0?' open':'')+'><summary><b>'+esc(b[1])+'</b> <span class="mu">'+(gen?'':'· '+x.n.map(esc).join(', '))+'</span></summary><p class="bwhy">'+(BWHY[b[1]]||'')+'</p><ol>'+b[2].map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol>'+(b[3]?'<p class="tip">💡 '+b[3]+'</p>':'')+'</details>'}).join('')+'</div>'}
+function bguideHtmlOld(bi){if(!bi.length)return '<div class="cd"><h3>📖 Guía de uso</h3><p class="mu" style="margin-top:6px">Cuando añadas pañales, biberones, toallitas u otros artículos de bebé, aquí aparecerá cómo usar cada uno paso a paso.</p></div>';
+ var g={},ord=[];bi.forEach(function(i){var b=bguide(i),k=b[1];if(!g[k]){g[k]={b:b,n:[]};ord.push(k)}g[k].n.push(i.name)});
+ return '<div class="cd"><h3>📖 Cómo usar tus artículos de bebé</h3><p class="mu" style="margin:4px 0 8px">Guía general paso a paso. Ante cualquier duda, consulta a tu pediatra.</p>'+ord.map(function(k){var x=g[k],b=x.b;return '<details><summary><b>'+esc(b[1])+'</b> <span class="mu">· '+x.n.map(esc).join(', ')+'</span></summary><ol>'+b[2].map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol>'+(b[3]?'<p class="tip">💡 '+b[3]+'</p>':'')+'</details>'}).join('')+'</div>'}
+function btut(){return '<div class="cd"><h3>👶 Cómo usar esta sección</h3><details class="gd"><summary><b>Guía rápida en 4 pasos</b></summary><ol><li>Guarda cada artículo con <b>＋</b> o desde <b>Añadir</b>; elige la categoría <b>Bebé</b>.</li><li>Dile cuántos pañales usa al día y la app calcula <b>cuántos días te duran</b>.</li><li>Pon un <b>mínimo</b> en pañales y toallitas para que te avise antes de que se acaben.</li><li>Abajo, en <b>Cómo usar tus artículos de bebé</b>, tienes un mini tutorial de cada cosa que guardaste.</li></ol><p class="tip">💡 Si compras un paquete de 40 pañales, anótalo como 40 ud. Así el cálculo es exacto.</p></details></div>'}
+function vBaby(){var bi=S.items.filter(function(i){return i.cat==='bebe'}),
+ pa=bi.filter(function(i){return i.sub==='panales'&&i.unit==='ud'}).reduce(function(s,i){return s+i.qty},0),
+ ppd=S.baby.ppd||0,dd=ppd>0?Math.floor(pa/ppd):null,
+ ch=['todo'].concat(Object.keys(SUBS)).map(function(k){return '<button class="chip'+(BF===k?' on':'')+'" data-a="bflt" data-k="'+k+'">'+(k==='todo'?'Todo':SUBS[k])+'</button>'}).join(''),
+ li=bi.filter(function(i){return BF==='todo'||i.sub===BF}).sort(function(x,y){return x.name.localeCompare(y.name)}),
+ q=function(l,s,n,u,m){return '<button class="b" data-a="bnew" data-s="'+s+'" data-n="'+n+'" data-u="'+u+'" data-m="'+m+'">＋ '+l+'</button>'};
+ return '<div class="brand">MANAGEMENT TECH GEO</div><h1 style="margin-top:10px">👶 Sección de bebé</h1><p class="mu">Pañales, toallitas, biberones y utensilios en un solo lugar.</p><section class="hero"><h1>'+fmt(pa)+' pañales</h1><p>'+(dd===null?'Indica cuántos usa al día para calcular cuánto te duran.':dd>0?'Te alcanzan para unos '+dd+' días.':'Se acabaron o están por acabarse.')+'</p><label style="color:#F5F1E8;margin:0">Pañales que usa al día<input id="ppd" type="number" min="0" step="1" inputmode="numeric" value="'+ppd+'" style="max-width:140px"></label><p style="font-size:.8rem;opacity:.75;margin:10px 0 0">Cuenta solo los pañales anotados en «ud». Si compras un paquete de 40, anota 40 ud.</p></section><div class="row">'+q('Pañales','panales','Pañales talla ','ud',10)+q('Toallitas','toallitas','Toallitas húmedas','paq',2)+q('Alimentación','alimentacion','','ud',0)+q('Utensilio','utensilios','','ud',0)+'<button class="b p" data-a="bguide">📖 Cómo usar mis artículos</button></div>'+btut()+'<div class="chips">'+ch+'</div>'+(li.length?'<div class="cd">'+li.map(row).join('')+'</div>':'<div class="empty"><span>👶</span>Aún no hay productos de bebé en esta sección.</div>')+bguideHtml(bi)}
+function render(){var v={home:vHome,pan:vPan,baby:vBaby,rec:vRec,add:vAdd,list:vList,set:vSet}[T]();$('app').innerHTML=v;
+  document.querySelectorAll('#tb button').forEach(function(b){b.classList.toggle('on',b.dataset.t===(T==='rec'?'pan':T))})}
+
+/* ---------- formulario ---------- */
+function openForm(it){it=it||{};var nw=!it.id;
+  modal('<h2>'+(nw?'Nuevo producto':'Editar producto')+'</h2><label>Nombre<input id="f_n" value="'+esc(it.name||'')+'" placeholder="Ej. Arroz, cloro, shampoo"></label><div class="two"><label>Cantidad<input id="f_q" type="number" step="any" inputmode="decimal" value="'+(it.qty!=null?it.qty:1)+'"></label><label>Unidad<select id="f_u">'+opts(UNITS,it.unit||'ud')+'</select></label></div><label>Categoría<select id="f_c">'+copts(it.cat||'alimento')+'</select></label><div id="f_sw" style="display:'+(it.cat==='bebe'?'block':'none')+'"><label>Sección de bebé<select id="f_s">'+sopts(it.sub||guessSub(it.name||''))+'</select></label></div><div class="two"><label>Avisar si queda (mínimo)<input id="f_m" type="number" step="any" inputmode="decimal" value="'+(it.min||0)+'"></label><label>Vence (opcional)<input id="f_e" type="date" value="'+esc(it.exp||'')+'"></label></div><label>Código de barras (opcional)<input id="f_k" inputmode="numeric" value="'+esc(it.code||'')+'"></label><div class="row"><button class="b p" data-a="savef" data-id="'+(it.id||'')+'">Guardar</button>'+(nw?'':'<button class="b d" data-a="delf" data-id="'+it.id+'">Eliminar</button>')+'<button class="b" data-a="close">Cancelar</button></div>')}
+function saveForm(id){var n=$('f_n').value.trim(),q=parseFloat($('f_q').value);
+  if(!n){toast('Escribe el nombre del producto');return}
+  if(!(q>=0)||isNaN(q)){toast('La cantidad no es válida');return}
+  var o={name:n,qty:q,unit:$('f_u').value,cat:$('f_c').value,min:parseFloat($('f_m').value)||0,exp:$('f_e').value,code:$('f_k').value.trim(),sub:$('f_c').value==='bebe'?$('f_s').value:''};
+  if(id){var f=S.items.filter(function(i){return i.id===id})[0];if(f)for(var k in o)f[k]=o[k]}
+  else{if(q<=0){toast('La cantidad debe ser mayor a 0');return}addItem(o);S.hist.unshift({t:Date.now(),s:'Manual: '+n,n:1});if(RM){S.extra=S.extra.filter(function(x){return x.id!==RM})}}
+  if(o.code)S.codes[o.code]={name:n,unit:o.unit,cat:o.cat,min:o.min};
+  S.hist=S.hist.slice(0,30);save();closeM();render();toast('Guardado');burst()}
+
+/* ---------- escáner de códigos ---------- */
+function stopCam(){clearInterval(SC.timer);SC.timer=null;try{if(SC.zx)SC.zx.reset()}catch(e){}SC.zx=null;if(SC.stream){SC.stream.getTracks().forEach(function(t){t.stop()});SC.stream=null}}
+function ss(m){var e=$('ss');if(e)e.textContent=m}
+function loadZX(cb){if(window.ZXing)return cb(true);var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';s.onload=function(){cb(!!window.ZXing)};s.onerror=function(){cb(false)};document.head.appendChild(s)}
+function openScan(){SC.done=false;modal('<h2>Escanear código</h2><div class="vw"><video id="vid" playsinline muted></video></div><p class="mu" id="ss">Abriendo cámara…</p><label>O escribe el código<input id="mc" inputmode="numeric" placeholder="Ej. 7461234567890"></label><div class="row"><button class="b p" data-a="mcode">Usar código</button><button class="b" data-a="close">Cerrar</button></div>');
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ss('Este navegador no permite la cámara aquí. Escribe el código.');return}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(s){
+    var v=$('vid');if(!v||!$('ov').classList.contains('show')){s.getTracks().forEach(function(t){t.stop()});return}
+    SC.stream=s;v.srcObject=s;v.play().catch(function(){});ss('Apunta al código de barras');
+    if('BarcodeDetector' in window){var d=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e','code_128','code_39','qr_code']});
+      SC.timer=setInterval(function(){if(v.readyState<2)return;d.detect(v).then(function(r){if(r.length)got(r[0].rawValue)}).catch(function(){})},350)}
+    else loadZX(function(ok){if(!ok){ss('No se pudo cargar el lector. Escribe el código.');return}
+      try{SC.zx=new ZXing.BrowserMultiFormatReader();SC.zx.decodeFromStream(s,v,function(r){if(r)got(r.getText())})}catch(e){ss('No se pudo iniciar el lector. Escribe el código.')}})
+  }).catch(function(){ss('No se pudo abrir la cámara. Revisa el permiso o escribe el código.')})}
+function got(c){if(SC.done||!c)return;SC.done=true;try{if(C().vib&&navigator.vibrate)navigator.vibrate(60)}catch(e){}closeM();lookup(String(c).trim())}
+function lookup(c){var k=S.codes[c];
+  if(k){openForm({name:k.name,unit:k.unit,cat:k.cat,min:k.min,code:c,qty:1});toast('Producto reconocido');return}
+  toast('Buscando producto…');var done=false,ctl=window.AbortController?new AbortController():null;
+  function fin(name){if(done)return;done=true;openForm({name:name||'',code:c,qty:1,cat:'alimento'});toast(name?'Producto encontrado':'Código nuevo: completa el nombre')}
+  setTimeout(function(){if(ctl)ctl.abort();fin('')},5000);
+  try{fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(c)+'.json?fields=product_name,brands',{signal:ctl?ctl.signal:undefined}).then(function(r){return r.json()}).then(function(d){var p=d&&d.product;fin(p&&p.product_name?(p.product_name+(p.brands?' · '+p.brands.split(',')[0]:'')):'')}).catch(function(){fin('')})}catch(e){fin('')}}
+
+/* ---------- facturas ---------- */
+function prepImage(file){return new Promise(function(res,rej){var u=URL.createObjectURL(file),im=new Image();
+  im.onload=function(){var k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.82).split(',')[1])};
+  im.onerror=function(){rej(new Error('img'))};im.src=u})}
+function callClaude(messages,max){var key=st.get('key')||'';if(!CONFIG.API_URL&&!key)return Promise.reject(new Error('nokey'));var url,hd,body;
+  if(CONFIG.API_URL){url=CONFIG.API_URL;hd={'Content-Type':'text/plain;charset=utf-8'};body={model:CONFIG.MODEL,max_tokens:max,messages:messages,code:CONFIG.ACCESS_CODE}}
+  else{url='https://api.anthropic.com/v1/messages';hd={'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};body={model:CONFIG.MODEL,max_tokens:max,messages:messages}}
+  return fetch(url,{method:'POST',headers:hd,body:JSON.stringify(body)}).then(function(r){return r.json().then(function(d){if(!r.ok||d.error||!d.content)throw new Error('api');return d.content.filter(function(b){return b.type==='text'}).map(function(b){return b.text}).join('\n')})})}
+function parseJson(t){try{var c=String(t).replace(/```json|```/gi,'').trim(),a=c.indexOf('{'),b=c.lastIndexOf('}');return JSON.parse(a>=0?c.slice(a,b+1):c)}catch(e){return null}}
+function readReceipt(file){if(!file)return;modal('<h2>Leyendo factura…</h2><p class="mu">Esto toma unos segundos.</p>');
+  prepImage(file).then(function(b64){return callClaude([{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}},{type:'text',text:'Eres un lector de facturas y tickets de compra. Extrae TODOS los productos comprados (comida, bebidas, limpieza, higiene, hogar, mascotas, pañales y artículos de bebé, etc.); ignora descuentos, impuestos y totales. Nombres en español, genéricos y en singular. Si no ves cantidad usa 1 y unidad "ud". Unidades permitidas: kg, g, lb, l, ml, ud, paq, caja. Responde SOLO con JSON estricto sin markdown: {"items":[{"name":"Arroz","quantity":1,"unit":"lb","category":"alimento"}]}. Categorías: alimento|bebida|limpieza|higiene|hogar|mascota|bebe|otro. Si no es una factura legible responde {"items":[]}.'}]}],2000)})
+  .then(function(t){var j=parseJson(t);if(!j||!Array.isArray(j.items))throw new Error('parse');
+    var a=j.items.filter(function(i){return i&&i.name}).map(function(i){var u=unitN(String(i.unit||'ud'));return{name:String(i.name).trim(),qty:Number(i.quantity)>0?Number(i.quantity):1,unit:UNITS.indexOf(u)>=0?u:'ud',cat:CATS[i.category]?i.category:'otro'}});
+    if(!a.length)throw new Error('empty');review(a,'Factura (IA)')})
+  .catch(function(e){var m=e.message==='nokey'?'La lectura de facturas por foto no está disponible todavía. Usa «Pegar factura o lista» o escanea el código de barras.':e.message==='empty'?'No pude leer productos en esa foto. Prueba con más luz y la factura completa y plana.':'No se pudo leer la factura. Revisa tu conexión o tu clave e inténtalo de nuevo.';
+    modal('<h2>Aviso</h2><p style="margin:10px 0">'+m+'</p><div class="row"><button class="b p" data-a="close">Entendido</button></div>')})}
+function review(a,src){PEND=a;PEND.src=src;modal('<h2>Revisa los productos</h2><p class="mu">Desmarca los que no quieras añadir.</p><div>'+a.map(function(i,k){return '<label class="rv" style="margin:0"><input type="checkbox" class="rvc" data-i="'+k+'" checked><span style="flex:1">'+CATS[i.cat][0]+' '+esc(i.name)+'</span><span class="mu">'+fmt(i.qty)+' '+esc(i.unit)+'</span></label>'}).join('')+'</div><div class="row"><button class="b p" data-a="rvok">Añadir a mi despensa</button><button class="b" data-a="close">Cancelar</button></div>')}
+
+/* ---------- eventos ---------- */
+document.addEventListener('click',function(e){var el=e.target.closest('[data-a]');if(!el||el.type==='checkbox')return;var a=el.dataset.a,id=el.dataset.id;
+  var it=id?S.items.filter(function(i){return i.id===id})[0]:null;
+  if(a==='tab'){T=el.dataset.t;render();anim();window.scrollTo(0,0)}
+  else if(a==='scan')openScan();
+  else if(a==='mcode'){var c=$('mc').value.trim();if(c.length<4){toast('Escribe un código válido');return}got(c)}
+  else if(a==='close')closeM();
+  else if(a==='new')openForm();
+  else if(a==='edit'&&it)openForm(it);
+  else if(a==='savef')saveForm(id);
+  else if(a==='delf'&&it){if(confirm('¿Eliminar «'+it.name+'»?')){S.items=S.items.filter(function(i){return i.id!==id});save();closeM();render()}}
+  else if((a==='inc'||a==='dec')&&it){var step=(it.unit==='g'||it.unit==='ml')?100:(it.unit==='ud'||it.unit==='paq'||it.unit==='caja')?1:.5;it.qty=fmt(it.qty+(a==='inc'?step:-step));
+    if(it.qty<=0){it.qty=0;if(!(it.min>0))S.items=S.items.filter(function(i){return i.id!==id})}save();render()}
+  else if(a==='flt'){F=el.dataset.k;render()}
+  else if(a==='bflt'){BF=el.dataset.k;render()}
+  else if(a==='bguide'){var gx=$('bg');if(gx){gx.querySelectorAll('details').forEach(function(d){d.open=true});gx.scrollIntoView({behavior:'smooth',block:'start'})}}
+  else if(a==='cfg'){var ck=el.dataset.k,cv=el.dataset.v;if(ck==='warn')cv=+cv;else if(ck==='big'||ck==='vib')cv=cv==='1'?1:0;setCfg(ck,cv);render()}
+  else if(a==='clrx'){S.extra=S.extra.filter(function(x){return!x.done});save();render();toast('Recordatorios hechos quitados')}
+  else if(a==='clrh'){S.hist=[];save();render();toast('Historial borrado')}
+  else if(a==='rec'){T='rec';render();anim();window.scrollTo(0,0)}
+  else if(a==='rflt'){RF=el.dataset.k;render()}
+  else if(a==='pp'){PP=+el.dataset.n;render()}
+  else if(a==='prices')openPrices();
+  else if(a==='savepr'){var np={};document.querySelectorAll('[data-pk]').forEach(function(inp){var v=parseFloat(inp.value);if(v>0&&v!==PR[inp.dataset.pk][2])np[inp.dataset.pk]=v});S.prices=np;save();closeM();render();toast('Precios guardados')}
+  else if(a==='rstpr'){S.prices={};save();closeM();render();toast('Precios restablecidos')}
+  else if(a==='rop'){var ri=+el.dataset.i;RO=RO===ri?-1:ri;render()}
+  else if(a==='rmiss'){var rr=REC[+el.dataset.i],rc=0;rr[3].forEach(function(g){if(!hasIng(g)){var nm=cap(g.split('|')[0]);if(!S.extra.some(function(x){return!x.done&&norm(x.name)===norm(nm)})){S.extra.push({id:uid(),name:nm,due:'',done:false});rc++}}});save();toast(rc?rc+' ingredientes añadidos a tus recordatorios':'Ya estaban en tus recordatorios')}
+  else if(a==='bnew'){openForm({cat:'bebe',sub:el.dataset.s,name:el.dataset.n,unit:el.dataset.u,min:+el.dataset.m,qty:1})}
+  else if(a==='photo')$('fi').click();
+  else if(a==='paste')modal('<h2>Pegar factura o lista</h2><p class="mu">Una línea por producto. Ej: «Arroz 5 lb», «2 Leche», «Cloro 1 l».</p><textarea id="pt" rows="8" placeholder="Arroz 5 lb&#10;Habichuelas rojas 2 lb&#10;Detergente 1 ud"></textarea><div class="row"><button class="b p" data-a="parse">Detectar productos</button><button class="b" data-a="close">Cancelar</button></div>');
+  else if(a==='parse'){var r=parseText($('pt').value);if(!r.length){toast('No se detectó ningún producto');return}review(r,'Texto pegado')}
+  else if(a==='rvok'){var n=0;document.querySelectorAll('.rvc').forEach(function(c){if(c.checked){addItem(PEND[+c.dataset.i]);n++}});
+    if(!n){toast('No marcaste ningún producto');return}S.hist.unshift({t:Date.now(),s:PEND.src,n:n});S.hist=S.hist.slice(0,30);save();closeM();T='pan';render();toast(n+' productos añadidos');burst()}
+  else if(a==='addx')addRem($('ex').value,$('exd').value);
+  else if(a==='rmbuy'){var rx=S.extra.filter(function(y){return y.id===id})[0];if(rx){openForm({name:rx.name,qty:1,cat:guess(rx.name)});RM=id}}
+  else if(a==='notif'){try{if(!('Notification' in window)){toast('Tu navegador no admite avisos');return}Notification.requestPermission().then(function(p){toast(p==='granted'?'Avisos activados':'Permiso no concedido');if(p==='granted')checkDue()})}catch(x){toast('No se pudieron activar los avisos')}}
+  else if(a==='delx'){S.extra=S.extra.filter(function(x){return x.id!==id});save();render()}
+  else if(a==='share'||a==='copyl'){var t=listText();if(!t){toast('La lista está vacía');return}if(a==='share')window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank');else copyText(t,'Lista copiada')}
+  else if(a==='savekey'){st.set('key',$('ky').value.trim());toast('Clave guardada')}
+  else if(a==='backup')copyText(JSON.stringify(S),'Respaldo copiado');
+  else if(a==='restore')modal('<h2>Restaurar respaldo</h2><p class="mu">Pega aquí el respaldo copiado antes. Reemplaza tus datos actuales.</p><textarea id="rt" rows="7"></textarea><div class="row"><button class="b p" data-a="dorestore">Restaurar</button><button class="b" data-a="close">Cancelar</button></div>');
+  else if(a==='dorestore'){try{var d=JSON.parse($('rt').value);if(!d||!Array.isArray(d.items))throw 0;S={items:d.items,extra:d.extra||[],hist:d.hist||[],codes:d.codes||{},baby:d.baby||{ppd:6},cfg:S.cfg||{},prices:d.prices||{}};save();closeM();render();toast('Respaldo restaurado')}catch(x){toast('El respaldo no es válido')}}
+  else if(a==='cpcode')copyText(SRC,'Código HTML copiado');
+  else if(a==='dlcode')download('despensa-pro.html',SRC,'text/html');
+  else if(a==='reset'){if(confirm('¿Borrar todos tus datos? Esta acción no se puede deshacer.')){S={items:[],extra:[],hist:[],codes:{},baby:{ppd:6},cfg:S.cfg||{},prices:S.prices||{}};save();render();toast('Datos borrados')}}
+});
+document.addEventListener('change',function(e){var el=e.target;
+  if(el.id==='f_c'){$('f_sw').style.display=el.value==='bebe'?'block':'none'}else if(el.id==='cfn'){setCfg('name',el.value.trim());toast('Nombre guardado');render()}else if(el.id==='ppd'){S.baby.ppd=Math.max(0,parseFloat(el.value)||0);save();render()}else if(el.id==='fi'){var f=el.files&&el.files[0];el.value='';readReceipt(f)}
+  else if(el.dataset&&el.dataset.a==='tgl'){var x=S.extra.filter(function(y){return y.id===el.dataset.id})[0];if(x){x.done=el.checked;save();render()}}});
+document.addEventListener('input',function(e){if(e.target.id==='sq'){Q=e.target.value;$('pl').innerHTML=plist()}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM();if(e.key==='Enter'&&e.target.id==='ex'){e.preventDefault();addRem(e.target.value,($('exd')||{}).value)}});
+$('ov').addEventListener('click',function(e){if(e.target===$('ov'))closeM()});
+function listText(){var l=lows().map(function(i){return '• '+i.name}).concat(S.extra.filter(function(x){return!x.done}).map(function(x){return '• '+x.name}));return l.length?'Lista de compras:\n'+l.join('\n'):''}
+function anim(){if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;var A=$('app');A.classList.remove('anim');void A.offsetWidth;A.classList.add('anim');clearTimeout(anim.h);anim.h=setTimeout(function(){A.classList.remove('anim')},900);
+ document.querySelectorAll('.st b').forEach(function(b){var n=parseInt(b.textContent,10);if(!n)return;var t0=performance.now();(function f(t){var p=Math.min(1,(t-t0)/700);b.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)})}
+function burst(){if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;var E=['✨','🛒','⭐','🎉','💙'];for(var i=0;i<14;i++){var s=document.createElement('span');s.className='bu';s.textContent=E[i%E.length];var a=Math.random()*Math.PI,d=90+Math.random()*120;s.style.setProperty('--x',Math.round(Math.cos(a)*d)+'px');s.style.setProperty('--y',Math.round(-Math.sin(a)*d-40)+'px');s.style.setProperty('--r',Math.round(Math.random()*360-180)+'deg');document.body.appendChild(s);(function(n){setTimeout(function(){n.remove()},1000)})(s)}}
+document.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse')return;var t=e.target.closest&&e.target.closest('.big,.st div,.hero');if(!t)return;var r=t.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;t.style.transform='perspective(700px) rotateX('+(-y*10).toFixed(1)+'deg) rotateY('+(x*12).toFixed(1)+'deg) translateZ(6px)'});
+document.addEventListener('pointerout',function(e){var t=e.target.closest&&e.target.closest('.big,.st div,.hero');if(t&&!t.contains(e.relatedTarget))t.style.transform=''});
+load();applyCfg();render();anim();checkDue();
+</script>
+</body>
+</html>

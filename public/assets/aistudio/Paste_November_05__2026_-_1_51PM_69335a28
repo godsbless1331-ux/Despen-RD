@@ -1,0 +1,449 @@
+# DESPENSA RD · Arquitectura 2.0
+### El sistema operativo del hogar dominicano
+
+**Versión:** 2.0 · **Fecha:** 5 nov 2026 · **Marca:** MANAGEMENT TECH GEO
+**Base analizada:** `mi-despensa-rd--v.3-pro` (Kotlin + Compose, Room, Play Billing, AI Studio)
+**Documento hermano:** `croquis/arquitectura-despensa-rd.html` (croquis visual) · `docs/PROMPT_MAESTRO_AI_STUDIO.md` (spec de construcción)
+
+---
+
+## 0. Resumen ejecutivo
+
+La app actual es una **lista de despensa con funciones pegadas alrededor**: inventario, bebé, recetas, chef, lista de compras y ajustes viven como pantallas separadas, cada una con su propia lógica, y varias prometen cosas que el código no hace.
+
+La propuesta 2.0 no es "más pestañas". Es convertirla en un **sistema de operaciones del hogar** con un núcleo de datos único y cinco módulos que se alimentan entre sí:
+
+> **Qué tengo → qué se vence → qué cocino → qué me falta → qué compro → cuánto gasto → quién más lo usa.**
+
+Ese ciclo es la columna vertebral del producto. Todo lo demás (bebé, mascotas, precios del colmado, reportes, asistente) son **lentes y automatizaciones sobre ese mismo ciclo**, no apps dentro de la app.
+
+**Cinco cambios que definen la 2.0:**
+
+1. **Un solo inventario** con catálogo de productos, ubicaciones (despensa/nevera/congelador), lotes y unidades convertibles. Bebé y mascotas son filtros, no bases de datos aparte.
+2. **Libro de movimientos (ledger)** en vez de "cantidad que se sobrescribe". Eso da historial real, mermas, consumo, deshacer y sincronización sin conflictos.
+3. **Una sola lista de compras** que une bajos de stock + recordatorios + faltantes de recetas + plan semanal, con presupuesto en RD$.
+4. **IA real con contrato y revisión humana** (Gemini server-side): factura por foto, importar texto/voz, chef y plan semanal. Con respaldo determinista cuando no hay red.
+5. **Pro verificado en servidor**. Se elimina el "Activar Pro (Demo)" y el auto-regalo de Pro cuando Billing no está listo.
+
+---
+
+## 1. Diagnóstico: qué no cierra hoy
+
+| # | Hallazgo | Evidencia | Impacto |
+|---|----------|-----------|---------|
+| 1 | **Foto de factura es simulada**: ignora la imagen elegida y parsea un texto fijo de ejemplo. | `MainActivity.kt:136-147` | Función estrella que no funciona. Riesgo de reseñas negativas. |
+| 2 | **Escáner de códigos es falso**: no abre cámara; 3 chips y 6 códigos hardcodeados. | `BarcodeScannerDialog.kt:66-115` | El permiso de cámara declarado no se usa. |
+| 3 | **Multiusuario decorativo**: existe `currentProfileId`, pero ninguna tabla tiene `profileId`. | `PantryEntities.kt:10-99`, `PreferencesManager.kt:251-262` | Cambiar de perfil no cambia ningún dato. |
+| 4 | **Historial recortado a 30 filas** mientras Pro promete "todos los meses". | `PantryDaos.kt:60-67`, `SettingsScreen` | Promesa comercial incumplida. |
+| 5 | **"Chef Inteligente" no es IA**: es un `when` estático con 8 ideas. `firebase-ai` está declarado y nunca importado. | `ChefIdea.kt:16-289`, `build.gradle.kts:110` | Coste de dependencia sin valor. La promesa "IA" es falsa. |
+| 6 | **Pro gratis**: si Billing no está listo se activa Pro con un token inventado; además hay botón "Activar Pro (Demo)". | `BillingManager.kt:190-200`, `PaywallDialog.kt:255-257` | Pérdida directa de ingresos. |
+| 7 | **Dos pantallas de compras**: Inicio y Lista muestran recordatorios y bajos de stock con criterios distintos. | `HomeScreen.kt:351-433`, `ShoppingListScreen.kt:129-258` | Datos contradictorios para el usuario. |
+| 8 | **Unidades incoherentes**: pañales se cuentan en `ud`, el preset del escáner usa `paq`; no hay conversión. | `BabyScreen.kt:79-85`, `BarcodeScannerDialog.kt:71` | El cálculo de días de pañales falla. |
+| 9 | **Respaldo asimétrico**: exporta items + recordatorios + config, importa solo items. | `PantryViewModel.kt:537-617` | Pérdida silenciosa de datos al restaurar. |
+| 10 | **Cero notificaciones**: hay permiso `VIBRATE` pero no `POST_NOTIFICATIONS` ni WorkManager. | `AndroidManifest.xml:5-6` | Vencimientos y recordatorios solo existen si abres la app. |
+| 11 | **Límites y upsell duplicados y hardcodeados** (30, 25, 5, RD$1,690) en 4+ sitios. | `HomeScreen`, `AddScreen`, `PaywallDialog`, `LimitAlertDialog` | Cambiar una regla exige tocar 5 archivos; riesgo de inconsistencia. |
+| 12 | **Esquema frágil**: Room v1 `exportSchema=false`, seed con `INSTANCE?.let` dentro de `onCreate`. | `AppDatabase.kt:12-49` | Migraciones imposibles de validar; riesgo de crash en upgrades. |
+
+**Conclusión:** el problema no es falta de funciones, es **falta de un núcleo**. La 2.0 invierte la lógica: primero el modelo de datos y el ciclo del hogar, después las pantallas.
+
+---
+
+## 2. Tesis de producto
+
+**Producto:** Despensa RD 2.0 — el sistema operativo del hogar dominicano.
+
+**Usuario primario:** jefa/e de hogar en RD que compra en colmado y supermercado, cocina criollo, tiene uno o más hijos (a veces bebé), comparte la casa con familia y quiere dejar de botar comida y de comprar dos veces lo mismo.
+
+**Trabajos por resolver (JTBD):**
+
+| JTBD | Módulo que lo resuelve |
+|------|------------------------|
+| "Que no se me dañe la comida" | Inventario + vencimientos + recetas de rescate |
+| "Que no se me olvide comprar" | Lista unificada + pronóstico de consumo |
+| "Qué cocino con lo que tengo" | Cocina + Chef IA |
+| "Cuánto gasté este mes" | Finanzas del hogar |
+| "Que mi familia sepa qué hay" | Hogar compartido |
+| "No tengo tiempo para escribir la factura" | Captura IA (foto/texto/voz) |
+
+**No es:** red social, app de delivery, banca personal, app médica. Esa frontera evita que "multifuncional" se vuelva "incoherente".
+
+---
+
+## 3. Decisiones de arquitectura (ADR)
+
+### ADR-01 · Dominio puro, Android en los bordes
+El núcleo (`:core:domain`) es Kotlin puro: entidades, reglas de stock, unidades, presupuesto, recomendación. **No importa Android.** Los repositorios son interfaces. Esto permite probar la lógica sin emulador y abrir después un cliente web/PWA sin reescribir reglas.
+
+### ADR-02 · Ledger de movimientos como fuente de verdad
+Toda variación de inventario es un `StockMovement` inmutable (`IN`, `OUT`, `ADJUST`, `WASTE`, `TRANSFER`). La cantidad visible se materializa en `InventoryItem.qtyBase` y se valida contra la suma de movimientos.
+
+**Por qué:** resuelve historial completo, mermas, "deshacer", auditoría familiar y sincronización multi-dispositivo por deltas (dos personas sumando arroz no se pisan la cantidad).
+
+### ADR-03 · Catálogo canónico + unidades base
+Los nombres libres de hoy ("Arroz", "arroz selecto", "Arroz Selecto 5 lb") se normalizan a un `Product` con unidad base (g, ml, ud). Todo se guarda en unidad base; la UI muestra lb/kg/l/ud.
+
+**Por qué:** sin esto no hay precios comparables, ni inventario multi-formato, ni cálculo de recetas fiable.
+
+### ADR-04 · Offline-first con outbox
+Room es la fuente de verdad local. Toda escritura entra a `outbox` y el `SyncEngine` la empuja a Firestore cuando hay sesión y red. Conflictos: **delta para cantidades**, last-write-wins por campo para metadatos, y `idempotencyKey` para no duplicar.
+
+**Por qué:** en RD el internet del colmado no es confiable. La app debe funcionar completa sin red; solo la IA se encola.
+
+### ADR-05 · IA como servicio con contrato, no como pantalla
+`AiGateway` (interfaz de dominio) con implementaciones: `GeminiGateway` (server-side), `LocalFallbackGateway` (parser y recetario base). Toda salida de IA pasa por **JSON Schema + validación + umbral de confianza + revisión humana** antes de tocar datos.
+
+**Por qué:** la IA no puede escribir inventario silenciosamente. Un ticket mal leído no debe corromper el stock.
+
+### ADR-06 · Un solo motor de monetización
+`EntitlementRepository` + `MonetizationPolicy` central. Una sola fuente de límites, un solo paywall, un solo precio. Pro se verifica en servidor con Play Developer API; el cliente solo cachea el estado.
+
+### ADR-07 · Un design system, una navegación
+5 destinos + FAB central de captura. Componentes compartidos (`:core:ui`). Se eliminan las pantallas escondidas (`RECIPES`, `CHEF_IDEAS` dejan de ser rutas internas y pasan a Cocina).
+
+### ADR-08 · Eventos de dominio para automatizar
+`ItemExpiring`, `StockBelowMin`, `PurchaseCompleted`, `MealPlanCreated`. WorkManager consume eventos y dispara notificaciones, sugerencias y resúmenes.
+
+---
+
+## 4. Arquitectura de capas
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│  PRESENTACIÓN · Jetpack Compose + Material 3                  │
+│  Hoy · Despensa · Cocina · Lista · Hogar  +  FAB Capturar     │
+│  State holders (ViewModel + UiState) · Design system          │
+└───────────────▲───────────────────────────────────────────────┘
+                │ intents / UiState
+┌───────────────┴───────────────────────────────────────────────┐
+│  DOMINIO · Kotlin puro                                        │
+│  Casos de uso: RegistrarCompra, Consumir, Planificar,         │
+│  CalcularPresupuesto, SugerirReceta, CapturarFactura,         │
+│  SincronizarHogar                                             │
+│  Reglas: stock · unidades · vencimientos · costos · permisos  │
+└───────────────▲───────────────────────────────────────────────┘
+                │ interfaces de repositorio
+┌───────────────┴───────────────────────────────────────────────┐
+│  DATOS                                                        │
+│  Room (SSOT) · DataStore (prefs) · SyncEngine + Outbox        │
+│  Repositorios: Inventario, Compras, Cocina, Finanzas,         │
+│  Hogar, IA, Entitlements                                      │
+└───────────────▲───────────────────────────────────────────────┘
+                │
+┌───────────────┴───────────────────────────────────────────────┐
+│  PLATAFORMA Y SERVICIOS                                       │
+│  ML Kit (código de barras) · CameraX · WorkManager            │
+│  Notificaciones · Play Billing · Backup/Export · Crashlytics  │
+└───────────────▲───────────────────────────────────────────────┘
+                │ HTTPS
+┌───────────────┴───────────────────────────────────────────────┐
+│  NUBE + IA                                                    │
+│  Firebase Auth · Firestore · Cloud Functions (proxy IA,       │
+│  verificación de compras) · Storage · App Check               │
+│  Gemini (Vision / Flash / Pro) · Play Developer API           │
+└───────────────────────────────────────────────────────────────┘
+```
+
+**Dependencias permitidas:** Presentación → Dominio → Datos → Servicios. Nunca al revés. La IA vive detrás de una interfaz del dominio.
+
+---
+
+## 5. Módulos funcionales
+
+| Módulo | Propósito | Funciones clave | Depende de |
+|--------|-----------|-----------------|------------|
+| **M1 Inventario** | Qué hay y dónde está | Catálogo, ubicaciones, lotes/vencimiento, mínimos, ajustes, mermas, búsqueda | Catálogo |
+| **M2 Captura** | Meter datos sin fricción | Manual, código de barras real, foto de factura, pegar texto, voz, importar backup | IA, Inventario |
+| **M3 Compras** | Qué falta y cuánto cuesta | Lista unificada, presupuesto, precios por colmado, historial de compras, conciliación | Inventario, Finanzas |
+| **M4 Cocina** | Qué cocino | Recetario RD con costo, Chef IA, plan semanal, faltantes → lista | Inventario, IA |
+| **M5 Hogar** | Quién comparte | Hogar, miembros, roles, invitaciones, tareas, perfiles reales | Auth, Sync |
+| **M6 Bebé** | Modo bebé | Inventario filtrado, calculadora de pañales, guías, bitácora | Inventario |
+| **M7 Finanzas** | Cuánto se gasta | Presupuesto mensual, gastos, costo de recetas, desperdicio, ahorro | Compras |
+| **M8 Insights** | Qué hago distinto | Consumo, predicción de reposición, vencimientos, resumen semanal | Todo |
+| **M9 Asistente IA** | Hablarle al hogar | Chat con herramientas (leer/escribir stock, listas, plan) | IA, Dominio |
+| **M10 Plataforma** | Que todo funcione | Auth, sync, notificaciones, billing, backup, ajustes, telemetría | — |
+
+### Consolidación de lo actual → 2.0
+
+| Hoy | 2.0 |
+|-----|-----|
+| Inicio (KPIs + alertas + recordatorios + historial + upsell) | **Hoy**: agenda + alertas accionables + resumen; sin duplicar lista |
+| Despensa | **Despensa**: inventario único con filtros (incluye Bebé/Mascotas/Limpieza) |
+| Bebé (pantalla completa) | **Lente Bebé** dentro de Despensa + tarjeta de pañales en Hoy + guías en Cocina/Hogar |
+| Añadir (pantalla completa) | **FAB Capturar** (bottom sheet) desde cualquier pantalla |
+| Lista | **Lista**: única fuente, con presupuesto y conciliación |
+| Recetas / Chef Ideas (hidden) | **Cocina**: recetario, Chef IA, plan semanal |
+| Ajustes | **Hogar → Ajustes** |
+| 6 pestañas | 5 destinos + FAB |
+
+---
+
+## 6. Modelo de datos
+
+### Identidad y hogar
+- `Household(id, name, currency, createdAt)`
+- `Member(id, householdId, authUid, role[OWNER|ADMIN|MEMBER|VIEWER], displayName, avatar)`
+- `Profile(id, householdId, name, emoji, kind[ADULT|CHILD|BABY|PET], birthDate?)`
+
+### Catálogo
+- `Product(id, canonicalName, normalizedName, category, baseUnit, brand?, isPerishable, shelfLifeDays?)`
+- `ProductBarcode(id, productId, barcode, source)`
+- `UnitConversion(fromUnit, toUnit, factor)` — o `baseUnit` + factores por producto
+- `Location(id, householdId, name, kind[PANTRY|FRIDGE|FREEZER|BABY|PET])`
+
+### Stock
+- `InventoryItem(id, householdId, profileId?, productId, locationId, qtyBase, minQtyBase, updatedAt)`
+- `StockBatch(id, itemId, qtyBase, expiresAt?, receivedAt, costPerBase?)`
+- `StockMovement(id, itemId, batchId?, type[IN|OUT|ADJUST|WASTE|TRANSFER], deltaBase, reason, source[MANUAL|SCAN|OCR|RECIPE|ASSISTANT|SYNC], refId?, createdBy, createdAt, deviceId, idempotencyKey)` ← **append-only**
+
+### Compras y precios
+- `ShoppingList(id, householdId, name, status, budgetAmount?, storeId?)`
+- `ShoppingListItem(id, listId, productId?, freeText, qtyBase, estPrice?, actualPrice?, checked, source[LOW_STOCK|RECIPE|MANUAL|ASSISTANT])`
+- `Store(id, name, chain, location?)`
+- `PriceObservation(id, productId, storeId, price, unit, observedAt, source[MANUAL|RECEIPT|COMMUNITY], confidence)`
+
+### Cocina
+- `Recipe(id, slug, name, servingsBase, minutes, difficulty, instructions[], tags[], isOfficial)`
+- `RecipeIngredient(recipeId, productId?, pattern, qtyBase, optional)`
+- `RecipeCostSnapshot(id, recipeId, servings, totalCost, missingCost, priceVersion, computedAt)`
+- `MealPlan(id, householdId, weekStart)` / `MealPlanEntry(id, planId, date, slot, recipeId?, servings, status)`
+
+### Finanzas y hogar
+- `Budget(id, householdId, month, amount, category?)`
+- `Expense(id, householdId, date, amount, storeId?, category, source[MANUAL|RECEIPT], receiptId?)`
+- `WasteLog(id, productId, qtyBase, cost, reason, date)`
+- `Task(id, householdId, title, dueAt?, assignee?, status, kind[SHOPPING|CHORE|REMINDER])`
+- `BabyProfile(id, profileId, birthDate, diapersPerDay, size, weightKg?)` / `DiaperLog(...)`
+
+### IA y plataforma
+- `AiInteraction(id, householdId, memberId, capability, model, promptHash, tokensIn, tokensOut, costEstimate, latencyMs, status, createdAt)`
+- `Notification(id, householdId, memberId, kind, payload, scheduledAt, deliveredAt, readAt)`
+- `Entitlement(id, householdId, sku, status, purchaseToken, verifiedAt, expiresAt?, source)`
+- `Outbox(id, entity, entityId, op, payload, deviceId, createdAt, syncedAt?)`
+- `AuditLog(id, householdId, actorId, action, entity, entityId, before, after, at)`
+
+**Reglas de integridad:**
+- `qtyBase >= 0` siempre; ajustes negativos requieren motivo.
+- Un movimiento con el mismo `idempotencyKey` no se aplica dos veces.
+- Borrar un producto no borra su historial: se marca `archived`.
+- `Expense` de una factura se genera desde la misma captura que creó los movimientos.
+
+---
+
+## 7. Flujos clave
+
+### F1 · Captura de factura (foto → stock)
+1. FAB **Capturar → Foto de factura**.
+2. Se comprime y sube a Cloud Function (o se envía a Gemini Vision server-side).
+3. Gemini devuelve JSON validado: comercio, fecha, total, líneas con `rawName, qty, unit, unitPrice, confidence`.
+4. **Pantalla de revisión**: cada línea con nombre canónico sugerido, cantidad, precio y semáforo de confianza. El usuario corrige y confirma.
+5. Se crean movimientos `IN`, se actualizan precios observados y se registra el gasto.
+6. Si la IA falla o está sin cuota: OCR local (ML Kit) + parser determinista → misma pantalla de revisión.
+
+**Regla:** ninguna captura IA escribe datos sin confirmación.
+
+### F2 · Semana → compra → despensa
+1. **Cocina → Plan semanal**: el usuario elige días/comidas o pide plan a Gemini con presupuesto y gustos.
+2. Se calculan faltantes por receta contra el stock.
+3. Los faltantes se agregan a la **Lista** con precio estimado y presupuesto total.
+4. En el colmado, la lista se marca por ítem; al cerrar la compra se pregunta "¿todo comprado?".
+5. Se crean movimientos `IN` y se concilian precios reales vs estimados.
+6. **Insights** actualiza gasto y predicción de reposición.
+
+### F3 · Vencimiento → acción
+1. Job diario (WorkManager) evalúa lotes por vencer según `warningDays` por categoría.
+2. Notificación con acción: **Cocinar algo con esto** / **Marcar merma** / **Posponer**.
+3. Cocinar abre recetas que usan ese producto; merma crea `WASTE` y suma al reporte de desperdicio.
+
+### F4 · Asistente con herramientas
+1. "Se acabó el arroz" → Gemini function calling → `searchInventory` → `addMovement(OUT)` → confirmación en pantalla.
+2. Toda escritura pasa por el mismo caso de uso y el mismo ledger que la UI. El asistente **no** tiene un camino privilegiado.
+
+---
+
+## 8. Motor de IA
+
+| Capacidad | Modelo | Salida | Respaldo sin IA |
+|-----------|--------|--------|-----------------|
+| Lectura de factura (imagen) | Gemini Flash (visión) | `ReceiptExtraction` (JSON Schema) | ML Kit OCR + `ReceiptTextParser` |
+| Importar texto/voz | Gemini Flash | `ParsedList` | Parser regex + reglas |
+| Resolver producto (foto/nombre) | Gemini Flash | `ProductResolution{name, category, baseUnit, confidence, alternatives}` | Catálogo + fuzzy match |
+| Chef IA | Gemini Flash/Pro | `RecipeDraft[]` (schema) | `ChefIdeasKnowledgeBase` (se conserva como fallback) |
+| Plan semanal | Gemini Pro | `MealPlanDraft` | Plantillas por presupuesto |
+| Asistente con herramientas | Gemini Pro + function calling | `ToolCall` + texto | No aplica (degrada a búsqueda) |
+| Resumen semanal | Gemini Flash | `InsightSummary` | Plantilla con agregados locales |
+
+**Controles obligatorios:**
+- **JSON Schema** en todas las llamadas; validación en servidor y cliente.
+- **Umbral de confianza** (< 0.75 → revisión obligatoria).
+- **Cuotas por usuario** y registro de tokens/costo en `AiInteraction`.
+- **Kill switch** remoto por capacidad.
+- **Prompt injection:** el contenido de facturas/textos se trata como datos, nunca como instrucciones; se delimita y se ignora cualquier instrucción embebida.
+- **Privacidad:** imágenes con retención de 90 días o borrado inmediato tras procesar; PII mínima; consentimiento explícito.
+- **Bebé:** tono informativo, sin diagnóstico; derivar al pediatra; disclaimers visibles.
+- **Fallback determinista** siempre disponible y probado con las mismas fixtures.
+
+---
+
+## 9. Monetización
+
+**Principio:** un solo `MonetizationPolicy`, un solo paywall, un solo precio. Pro se verifica en servidor.
+
+| | Gratis | Pro |
+|---|---|---|
+| Hogares | 1 | 1 |
+| Miembros | 2 | 5 |
+| Perfiles | 2 | Ilimitados |
+| Productos | 80 | Ilimitados |
+| Capturas IA / mes | 10 | 300 (uso justo) |
+| Historial | 7 días | Completo |
+| Plan semanal | No | Sí |
+| Reportes y presupuesto | Básico | Completo |
+| Exportar/restaurar | Solo items | Todo |
+| Precio | — | RD$1,690 pago único |
+
+**Recomendación comercial:** mantener el pago único como oferta de lanzamiento y añadir **Pro Anual RD$690** cuando la IA empiece a generar costo variable. El lifetime sin límite de IA es insostenible a escala.
+
+**Reglas de implementación:**
+- Eliminar `activateProDemo()` y el fallback que regala Pro (`BillingManager.kt:190-200`).
+- Verificar `purchaseToken` contra Play Developer API en Cloud Function; guardar `Entitlement` con `verifiedAt`.
+- Soportar `PENDING`, `USER_CANCELED`, reembolsos y restauración.
+- Un solo paywall con beneficios reales (nada que la app no haga).
+
+---
+
+## 10. Seguridad y privacidad
+
+- **Auth:** Firebase Auth (Google / correo). Un usuario puede pertenecer a varios hogares.
+- **Firestore rules:** acceso solo a documentos de hogares donde `member.authUid == request.auth.uid`; roles aplicados por regla.
+- **App Check** obligatorio en Functions.
+- **Claves de IA** solo en servidor; nunca en el APK.
+- **Backup:** exportación completa y cifrada; importación simétrica (arregla el bug actual).
+- **Borrado de cuenta:** elimina datos locales + remotos en 30 días.
+- **Auditoría:** `AuditLog` para cambios sensibles (roles, borrados, restauraciones).
+- **Permisos Android:** cámara y notificaciones solicitados en contexto, con explicación; sin permisos innecesarios.
+
+---
+
+## 11. Navegación y UX
+
+```
+┌──────────────────────────────────────────┐
+│              CONTENIDO                   │
+│                                          │
+│                                          │
+│                 ( + )  ← FAB Capturar    │
+├──────┬──────┬──────┬──────┬──────────────┤
+│ Hoy  │Desp. │Cocina│ Lista│   Hogar      │
+└──────┴──────┴──────┴──────┴──────────────┘
+```
+
+- **Hoy:** alertas accionables (vence, falta, plan de hoy), resumen de gasto, tareas.
+- **Despensa:** inventario único; filtros por ubicación/categoría/perfil; lentes Bebé y Mascotas.
+- **Cocina:** recetario, Chef IA, plan semanal, costo por porción.
+- **Lista:** lista única, presupuesto, modo colmado, conciliación.
+- **Hogar:** miembros, perfiles, bebé, finanzas, reportes, ajustes.
+- **FAB Capturar:** escanear, foto de factura, pegar texto, voz, manual.
+
+**Reglas UX:** máximo 2 niveles de profundidad; toda alerta tiene acción; estados vacíos con una acción clara; nada de upsell bloqueando la tarea principal.
+
+---
+
+## 12. Calidad, pruebas y observabilidad
+
+**Pirámide de pruebas**
+- **Dominio (rápidas, mayoría):** matemática del ledger, conversión de unidades, presupuesto, vencimientos, predicción.
+- **Datos:** migraciones Room (v1→v2 con datos reales), DAOs, outbox.
+- **UI:** flujos críticos con Compose Test (captura manual, confirmar factura, marcar compra, cambiar perfil).
+- **Contratos de IA:** fixtures doradas (tickets dominicanos reales anonimizados) + validación de schema + evaluación de precisión.
+- **E2E:** Maestro para los 5 flujos de la sección 7.
+
+**Observabilidad**
+- Crashlytics + Analytics con taxonomía de eventos (`capture_started`, `receipt_confirmed`, `purchase_completed`, `ai_fallback_used`).
+- Dashboard de costo IA (`AiInteraction`) y tasa de corrección humana.
+- Presupuesto de rendimiento: arranque < 2 s, listas de 500 ítems a 60 fps, sin jank en scroll.
+
+**Accesibilidad:** tipografía dinámica, TalkBack, contraste AA, objetivos táctiles ≥ 48 dp, todo el texto en español dominicano.
+
+---
+
+## 13. Estructura de proyecto propuesta
+
+```
+despensa-rd/
+├── app/                        # ensamblado, navegación, DI
+├── core/
+│   ├── domain/                 # Kotlin puro: entidades, casos de uso, reglas
+│   ├── data/                   # repositorios, sync, outbox
+│   ├── database/               # Room, DAOs, migraciones
+│   ├── network/                # Firestore, Functions
+│   ├── ai/                     # AiGateway, Gemini, fallback
+│   ├── ui/                     # design system, componentes
+│   └── testing/                # fixtures, fakes
+├── feature/
+│   ├── home/  inventory/  capture/  shopping/
+│   ├── cooking/  household/  baby/  finance/
+│   ├── insights/  assistant/  settings/
+└── functions/                  # Cloud Functions (IA, entitlements)
+```
+
+**Nota de pragmatismo:** para un desarrollador solo, empezar con 4 módulos (`app`, `core`, `data`, `feature`) y dividir cuando un módulo supere ~3.000 líneas. La modularidad es una herramienta, no un fin.
+
+---
+
+## 14. Roadmap
+
+| Fase | Duración | Entregable | Criterio de salida |
+|------|----------|------------|--------------------|
+| **F0 Fundaciones** | 2 semanas | Módulos, dominio, Room v2 con migración, ledger, design system, límites centralizados | Migración v1→v2 probada; Pro demo eliminado |
+| **F1 Núcleo** | 3 semanas | Inventario con ubicaciones/lotes, unidades, lista única, alertas locales, backup completo | 5 flujos manuales E2E en verde; 0 duplicados de UI |
+| **F2 IA real** | 3 semanas | Captura por foto, texto/voz, Chef IA, asistente | Precisión de factura ≥ 90% en 30 tickets; revisión humana obligatoria |
+| **F3 Hogar compartido** | 3 semanas | Auth, Firestore, invitaciones, roles, sync offline | 2 dispositivos editando sin perder datos |
+| **F4 Finanzas e insights** | 2 semanas | Presupuesto, gastos, mermas, reportes, plan semanal | Reporte mensual conciliado con compras |
+| **F5 Lanzamiento** | 2 semanas | Billing verificado, paywall único, telemetría, privacidad, pruebas de tienda | Compra real de prueba aprobada; política publicada |
+
+**Total:** ~15 semanas para una 2.0 completa. Si hay que lanzar antes: F0 + F1 + F2 + F5 dan una app honesta y vendible; F3/F4 van en actualización.
+
+---
+
+## 15. Criterios de aceptación (Definition of Done)
+
+- [ ] Ninguna función simulada visible al usuario (sin factura falsa, sin escáner falso).
+- [ ] Todo cambio de stock genera un `StockMovement`.
+- [ ] El historial muestra todo el rango que promete el plan.
+- [ ] Cambiar de perfil cambia realmente los datos mostrados.
+- [ ] Una sola lista de compras; Inicio y Lista no se contradicen.
+- [ ] Unidades convertibles; los pañales se cuentan correctamente en cualquier empaque.
+- [ ] Pro no se puede activar sin una compra verificada.
+- [ ] Exportar y restaurar conservan exactamente los mismos datos.
+- [ ] La app funciona sin red excepto en las funciones de IA.
+- [ ] La IA nunca escribe datos sin confirmación.
+- [ ] Notificaciones de vencimiento funcionan con la app cerrada.
+- [ ] Room con migraciones probadas y `exportSchema=true`.
+
+---
+
+## 16. Riesgos
+
+| Riesgo | Probabilidad | Mitigación |
+|--------|--------------|------------|
+| Costo de IA supera el ingreso del pago único | Alta | Cuota de uso justo + plan anual + caché + modelos Flash |
+| Migración de datos rompe usuarios existentes | Media | Migración Room probada + backup automático antes de migrar |
+| Sync multi-dispositivo genera duplicados | Media | Ledger con deltas + `idempotencyKey` + pruebas de concurrencia |
+| Alcance "multifuncional" se desborda | Alta | Frontera de producto (§2) + fases con criterios de salida |
+| Precisión OCR baja con tickets dominicanos | Media | Fixtures reales + revisión humana + fallback parser |
+| Rechazo en Play por permisos o IA | Baja | Permisos en contexto, disclaimers, política de privacidad |
+
+---
+
+## Anexo · Mapa de archivos actuales → módulos nuevos
+
+| Archivo actual | Destino 2.0 |
+|----------------|-------------|
+| `PantryViewModel.kt` (638 L) | Se divide en `InventoryViewModel`, `ShoppingViewModel`, `CookingViewModel`, `HouseholdViewModel` |
+| `PantryEntities.kt` + `PantryDaos.kt` | `:core:database` con ledger, producto, lote, lista, receta |
+| `ReceiptTextParser.kt` | `:core:ai` como `LocalReceiptParser` (fallback) |
+| `ChefIdeasKnowledgeBase` | `:core:ai` como `RuleBasedChef` (fallback), no como producto |
+| `BillingManager.kt` | `:core:data` + verificación en `functions/` |
+| `PreferencesManager.kt` | `:core:data` (DataStore) + `MonetizationPolicy` |
+| `MainActivity.kt` | `:app` navegación + `CaptureSheet` |
+| 8 pantallas | 5 destinos + subpantallas de feature |

@@ -1,0 +1,6 @@
+{
+  "name": "Despensa Pro",
+  "description": "Gestión inteligente de despensa, sección de bebé con cálculo de pañales, recetas colmado dominicano con costos en RD$ y lista de compras.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
